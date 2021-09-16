@@ -1,0 +1,47 @@
+.nav {
+    grid-area: n;
+    background-color: #c6f6c9;
+    padding: 10px;
+    font-size: x-small;
+
+
+}
+
+.item a {
+    color: #1d3123;
+    text-decoration: none;
+}
+.item a.active {
+    color: yellowgreen;
+}
+.all_items {
+    display: inline-grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-gap: 1vw;
+
+    /*grid-template-areas:
+    "item item item item item;*/
+}
+.all_items div {
+    width: 50px;
+}
+
+.item button {
+    background-color: darkgreen;
+    border: 1px solid black;
+    text-transform: uppercase;
+    touch-action: manipulation;
+    cursor: pointer;
+    font-size: x-small;
+    width: 50px;
+    height: 20px;
+}
+
+.item button:active {
+    border: 1px solid #c6f6c9;
+}
+
+.sideBar {
+
+}
