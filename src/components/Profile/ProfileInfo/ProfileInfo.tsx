@@ -1,8 +1,37 @@
 import React from "react";
 import style from "../Profile.module.css"
+import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
+
+type ProfileInfoPropsType = {
+    profileUser: any
+}
+
+export const ProfileInfo = (props: ProfileInfoPropsType) => {
+   const lookingForAJob = () =>{
+       if (props.profileUser.lookingForAJob === true) {
+           return "В поиске работы"
+       } else {
+           return "Работаю"
+       }
+   }
+const myContacts = () => {
+       let contact = props.profileUser.contacts
+    console.log(contact)
+    let div = ""
+      for (let key in contact) {
+          if (contact[key]) {
+              div += contact[key] + " "
+              console.log(`${key}: https://www.${contact[key]}`)
+          }
+      }
+
+     return div
+}
 
 
-export const ProfileInfo = () => {
+    if (!props.profileUser) {
+        return <SpinnerLoader />
+    }
     return (
         <div>
             <div>
@@ -12,10 +41,15 @@ export const ProfileInfo = () => {
             </div>
             <div className={style.description}>
             <div>
-                Main content
+                {props.profileUser.fullName}
             </div>
             <div>
-                Ava + description
+                <img src={props.profileUser.photos.small}/>
+                <div>{props.profileUser.aboutMe}</div>
+                <div>{lookingForAJob()}</div>
+                <div>Контакты для связи: </div>
+
+                <a href={"https://www." + myContacts()}>{myContacts()}</a>
             </div>
             </div>
         </div>

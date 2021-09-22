@@ -38,7 +38,7 @@ class UsersContainer extends React.Component<UsersType> {
 
 
     componentDidMount() {
-this.props.spinnerLoaderFetching(true)
+        this.props.spinnerLoaderFetching(true)
         axios
             .get(`https://social-network.samuraijs.com/api/1.0/users?page=${this
                 .props.currentPage}&count=${this.props.pageSize}`)
@@ -69,17 +69,17 @@ this.props.spinnerLoaderFetching(true)
 
         return <>
             {this.props.isFetching ? <SpinnerLoader/> : null}
-        <Users
-            follow={this.props.follow}
-            unfollow={this.props.unfollow}
-            totalUsersCount={this.props.totalUsersCount}
-            pageSize={this.props.pageSize}
-            onChangePage={this.onChangePage.bind(this)}
-            currentPage={this.props.currentPage}
-            users={this.props.users}
+            <Users
+                follow={this.props.follow}
+                unfollow={this.props.unfollow}
+                totalUsersCount={this.props.totalUsersCount}
+                pageSize={this.props.pageSize}
+                onChangePage={this.onChangePage.bind(this)}
+                currentPage={this.props.currentPage}
+                users={this.props.users}
 
 
-        />
+            />
         </>
     }
 
@@ -119,7 +119,6 @@ const mapStateToProps = (state: RootStoreType): StateToPropsType => {
 //         },
 //     }
 // }
-
 
 
 export default connect(mapStateToProps, {
