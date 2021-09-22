@@ -15,13 +15,14 @@ export type initialStateProfileReducerType = {
     textAreaValue: string
 }
 
-export type NewStatePostType =  {
+type NewStatePostType =  {
     type: "NEW-STATE-POST"
 }
-export type ChangeNewTextCallbackType = {
+type ChangeNewTextCallbackType = {
     type: "CHANGE-NEW-TEXT-CALLBACK"
     textProfile: string
 }
+export type ProfileActionsType = NewStatePostType | ChangeNewTextCallbackType
 
 const NEW_STATE_POST = "NEW-STATE-POST"
 const CHANGE_NEW_TEXT_CALLBACK = "CHANGE-NEW-TEXT-CALLBACK"

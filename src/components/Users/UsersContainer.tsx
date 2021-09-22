@@ -1,6 +1,4 @@
 import {connect} from "react-redux";
-
-import {Dispatch} from "redux";
 import {RootStoreType} from "../../redux/redux-store";
 import {
     followAC,
@@ -14,7 +12,6 @@ import {
 import React from "react";
 import axios from "axios";
 import {Users} from "./Users";
-import LoadingSpinner from "../../assets/images/200w.webp"
 import {SpinnerLoader} from "../commons/SpinnerLoader/SpinnerLoader";
 
 
@@ -22,7 +19,7 @@ type StateToPropsType = {
     users: Array<UserType>
     pageSize: number
     totalUsersCount: number
-    currentPage: 1 | number
+    currentPage: number
     isFetching: boolean
 }
 
@@ -73,13 +70,15 @@ this.props.spinnerLoaderFetching(true)
         return <>
             {this.props.isFetching ? <SpinnerLoader/> : null}
         <Users
+            follow={this.props.follow}
+            unfollow={this.props.unfollow}
             totalUsersCount={this.props.totalUsersCount}
             pageSize={this.props.pageSize}
             onChangePage={this.onChangePage.bind(this)}
             currentPage={this.props.currentPage}
             users={this.props.users}
-            follow={this.props.follow}
-            unfollow={this.props.unfollow}
+
+
         />
         </>
     }
@@ -96,29 +95,38 @@ const mapStateToProps = (state: RootStoreType): StateToPropsType => {
     }
 }
 
-const mapDispatchToProps = (dispatch: Dispatch): DispatchToPropsType => {
+// const mapDispatchToProps = (dispatch: Dispatch): DispatchToPropsType => {
+//
+//     return {
+//         follow: (userId: string) => {
+//             dispatch(followAC(userId))
+//         },
+//         unfollow: (userId: string) => {
+//             dispatch(unFollowAC(userId))
+//         },
+//         setNewUser: (users: Array<UserType>) => {
+//             dispatch(setNewUsersAC(users))
+//         },
+//         setCurrentPage: (page: number) => {
+//
+//             dispatch(setCurrentPageAC(page))
+//         },
+//         setTotalUsersCount: (totalCount: number) => {
+//             dispatch(setTotalUsersCountAC(totalCount))
+//         },
+//         spinnerLoaderFetching: (isFetching: boolean) => {
+//             dispatch(spinnerLoaderFetchingAC(isFetching))
+//         },
+//     }
+// }
 
-    return {
-        follow: (userId: string) => {
-            dispatch(followAC(userId))
-        },
-        unfollow: (userId: string) => {
-            dispatch(unFollowAC(userId))
-        },
-        setNewUser: (users: Array<UserType>) => {
-            dispatch(setNewUsersAC(users))
-        },
-        setCurrentPage: (page: number) => {
 
-            dispatch(setCurrentPageAC(page))
-        },
-        setTotalUsersCount: (totalCount: number) => {
-            dispatch(setTotalUsersCountAC(totalCount))
-        },
-        spinnerLoaderFetching: (isFetching: boolean) => {
-            dispatch(spinnerLoaderFetchingAC(isFetching))
-        },
-    }
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
+export default connect(mapStateToProps, {
+    follow: followAC,
+    unfollow: unFollowAC,
+    setNewUser: setNewUsersAC,
+    setCurrentPage: setCurrentPageAC,
+    setTotalUsersCount: setTotalUsersCountAC,
+    spinnerLoaderFetching: spinnerLoaderFetchingAC,
+})(UsersContainer)

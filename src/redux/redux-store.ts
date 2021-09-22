@@ -1,10 +1,10 @@
 import {createStore, combineReducers, Store} from "redux"
-import {ChangeNewTextCallbackType, NewStatePostType, profileReducer} from "./profile-reducer";
+import {ProfileActionsType, profileReducer} from "./profile-reducer";
 import {CallbackDialogsType, dialogsReducer, NewDialogsPostType} from "./dialogs-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 import {usersReducer, UsersReducerActionType} from "./users-reducer";
 
-export type AllActionsType = NewStatePostType | ChangeNewTextCallbackType | NewDialogsPostType | CallbackDialogsType | UsersReducerActionType
+export type AllActionsType = ProfileActionsType | NewDialogsPostType | CallbackDialogsType | UsersReducerActionType
 
 
  const rootReducer = combineReducers(
