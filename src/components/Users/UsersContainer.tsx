@@ -10,9 +10,9 @@ import {
     UserType
 } from "../../redux/users-reducer";
 import React from "react";
-import axios from "axios";
 import {Users} from "./Users";
 import {SpinnerLoader} from "../commons/SpinnerLoader/SpinnerLoader";
+import {usersAPI} from "../../api/api";
 
 
 type StateToPropsType = {
@@ -39,31 +39,26 @@ class UsersContainer extends React.Component<UsersType> {
 
     componentDidMount() {
         this.props.spinnerLoaderFetching(true)
-        axios
-            .get(`https://social-network.samuraijs.com/api/1.0/users?page=${this
-                .props.currentPage}&count=${this.props.pageSize}`, {
-                withCredentials: true,
-            })
-            .then(response => {
+        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
+            debugger
                 this.props.spinnerLoaderFetching(false)
-                this.props.setNewUser(response.data.items)
-                this.props.setTotalUsersCount(response.data.totalCount)
+                this.props.setNewUser(data.items)
+                this.props.setTotalUsersCount(data.totalCount)
             })
     }
 
     onChangePage(pageNum: number) {
-        console.log(this.props)
         this.props.setCurrentPage(pageNum)
         this.props.spinnerLoaderFetching(true)
-        console.log(pageNum)
-        axios
-            .get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNum}&count=${this
-                .props.pageSize}`, {
-                withCredentials: true,
-            })
-            .then(response => {
+
+        // axios
+        //     .get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNum}&count=${this
+        //         .props.pageSize}`, {
+        //         withCredentials: true,
+        //     })
+        usersAPI.getUsers(this.props.pageSize).then(data => {
                 this.props.spinnerLoaderFetching(false)
-                this.props.setNewUser(response.data.items);
+                this.props.setNewUser(data.items);
 
             })
 

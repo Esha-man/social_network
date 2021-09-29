@@ -66,7 +66,7 @@ const SPINNER_LOADER_FETCHING = "SPINNER-LOADER-FETCHING"
 
 export const initialStateUsers: InitialStateUsersType = {
     users: [],
-    pageSize: 100,
+    pageSize: 20,
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
