@@ -41,7 +41,9 @@ class UsersContainer extends React.Component<UsersType> {
         this.props.spinnerLoaderFetching(true)
         axios
             .get(`https://social-network.samuraijs.com/api/1.0/users?page=${this
-                .props.currentPage}&count=${this.props.pageSize}`)
+                .props.currentPage}&count=${this.props.pageSize}`, {
+                withCredentials: true,
+            })
             .then(response => {
                 this.props.spinnerLoaderFetching(false)
                 this.props.setNewUser(response.data.items)
@@ -56,7 +58,9 @@ class UsersContainer extends React.Component<UsersType> {
         console.log(pageNum)
         axios
             .get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNum}&count=${this
-                .props.pageSize}`)
+                .props.pageSize}`, {
+                withCredentials: true,
+            })
             .then(response => {
                 this.props.spinnerLoaderFetching(false)
                 this.props.setNewUser(response.data.items);

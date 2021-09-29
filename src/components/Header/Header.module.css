@@ -10,3 +10,18 @@
     /*border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;*/
 }
+
+.loginBlock {
+    float: right;
+    background-color: blue;
+    border: 1px solid black;
+    touch-action: manipulation;
+    cursor: pointer;
+    font-size: x-small;
+    width: 50px;
+    height: 20px;
+}
+
+.loginBlock:active {
+    border: 1px solid #c6f6c9;
+}

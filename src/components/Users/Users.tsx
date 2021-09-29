@@ -2,7 +2,8 @@ import styles from "./users.module.css";
 import {UserType} from "../../redux/users-reducer";
 import avatarDefault from "../../assets/images/avatar_default.png";
 import React from "react";
-import { NavLink } from "react-router-dom";
+import {NavLink} from "react-router-dom";
+import axios from "axios";
 
 
 type PropsType = {
@@ -47,9 +48,33 @@ export const Users = (props: PropsType) => {
                   </div>
                   <div>
                       {us.followed === true ? <button onClick={() => {
-                          props.unfollow(us.id)
+
+                          axios
+                              .delete(`https://social-network.samuraijs.com/api/1.0/follow/${us.id}`,
+                                  {
+                                      withCredentials: true,
+                                      headers: {"API-KEY": "de66d353-a705-4b5f-bcd1-8006ed2d9ab2"},
+                                  })
+                              .then(response => {
+                                  if (response.data.resultCode === 0) {
+                                      props.unfollow(us.id)
+                                  }
+                              })
+
+
                       }}>Unfollow</button> : <button onClick={() => {
-                          props.follow(us.id)
+
+                          axios
+                              .post(`https://social-network.samuraijs.com/api/1.0/follow/${us.id}`, {}, {
+                                  withCredentials: true,
+                                  headers: {"API-KEY": "de66d353-a705-4b5f-bcd1-8006ed2d9ab2"},
+                              })
+                              .then(response => {
+                                  if (response.data.resultCode === 0) {
+                                      props.follow(us.id)
+                                  }
+                              })
+
                       }}>Follow</button>}
                   </div>
               </span>

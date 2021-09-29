@@ -1,6 +1,7 @@
 import React from "react";
 import style from "../Profile.module.css"
 import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
+import avatarDefault from "../../../assets/images/avatar_default.png";
 
 type ProfileInfoPropsType = {
     profileUser: any
@@ -44,7 +45,7 @@ const myContacts = () => {
                 {props.profileUser.fullName}
             </div>
             <div>
-                <img src={props.profileUser.photos.small}/>
+                <img src={props.profileUser.photos.small ? props.profileUser.photos.small : avatarDefault}/>
                 <div>{props.profileUser.aboutMe}</div>
                 <div>{lookingForAJob()}</div>
                 <div>Контакты для связи: </div>

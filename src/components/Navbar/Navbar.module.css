@@ -27,20 +27,7 @@
     width: 50px;
 }
 
-.item button {
-    background-color: darkgreen;
-    border: 1px solid black;
-    text-transform: uppercase;
-    touch-action: manipulation;
-    cursor: pointer;
-    font-size: x-small;
-    width: 50px;
-    height: 20px;
-}
 
-.item button:active {
-    border: 1px solid #c6f6c9;
-}
 
 .sideBar {
 

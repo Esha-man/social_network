@@ -27,9 +27,6 @@ export const Navbar = () => {
                 <div className={style.item}>
                     <NavLink to="/users" activeClassName={style.active}>Users</NavLink>
                 </div>
-                <div className={style.item}>
-                    <button>LOG IN</button>
-                </div>
 
                 <div className={style.sideBar}>
                     <FriendsContainer/>

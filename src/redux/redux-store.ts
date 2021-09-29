@@ -3,8 +3,10 @@ import {ProfileActionsType, profileReducer} from "./profile-reducer";
 import {CallbackDialogsType, dialogsReducer, NewDialogsPostType} from "./dialogs-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 import {usersReducer, UsersReducerActionType} from "./users-reducer";
+import {authorizationReducer} from "./authorization-reducer";
 
-export type AllActionsType = ProfileActionsType | NewDialogsPostType | CallbackDialogsType | UsersReducerActionType
+export type AllActionsType = ProfileActionsType | NewDialogsPostType
+    | CallbackDialogsType | UsersReducerActionType
 
 
  const rootReducer = combineReducers(
@@ -13,6 +15,7 @@ export type AllActionsType = ProfileActionsType | NewDialogsPostType | CallbackD
          profile: profileReducer,
          sidebarContent: sidebarReducer,
          usersPage: usersReducer,
+         authorization: authorizationReducer,
 
      }
  );
