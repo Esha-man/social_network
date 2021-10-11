@@ -1,4 +1,5 @@
 import {v1} from "uuid";
+//20163
 
 type LocationType = {
     country: string
@@ -7,14 +8,14 @@ type LocationType = {
 
 export type UserType = {
     name: string
-    id: string
+    id: number
     uniqueUrlName: string | null
+    status: string
+    followed: boolean
     photos: {
         small: string | null
         large: string | null
-    },
-    status: string
-    followed: boolean
+    }
 
 }
 export type InitialStateUsersType = {
@@ -23,17 +24,18 @@ export type InitialStateUsersType = {
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: number[]
 
 }
 //--- action creators types ---//
 
 type FollowActionType = {
     type: "FOLLOW"
-    id: string
+    id: number
 }
 type UnFollowAcnionType = {
     type: "UNFOLLOW"
-    id: string
+    id: number
 }
 type SetNewUsersAcnionType = {
     type: "SET-USERS"
@@ -51,10 +53,15 @@ type SpinnerLoaderActionType = {
     type: "SPINNER-LOADER-FETCHING"
     isFetching: boolean
 }
+type FollowingInProgressActionType = {
+    type: "FOLLOWING-IN-PROGRESS"
+    isFetching: boolean
+    id: number
+}
 export type UsersReducerActionType = FollowActionType |
     UnFollowAcnionType | SetNewUsersAcnionType |
     SetCurrentPageAcnionType | SetTotalUsersCountActionType |
-    SpinnerLoaderActionType
+    SpinnerLoaderActionType | FollowingInProgressActionType
 
 //--- action creators types end ---//
 const FOLLOW = "FOLLOW"
@@ -63,6 +70,7 @@ const SET_USERS = "SET-USERS"
 const SET_CURRENT_PAGE = "SET-CURRENT-PAGE"
 const SET_TOTAL_USERS_COUNT = "SET-TOTAL-USERS-COUNT"
 const SPINNER_LOADER_FETCHING = "SPINNER-LOADER-FETCHING"
+const FOLLOWING_IN_PROGRESS = "FOLLOWING-IN-PROGRESS"
 
 export const initialStateUsers: InitialStateUsersType = {
     users: [],
@@ -70,7 +78,7 @@ export const initialStateUsers: InitialStateUsersType = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
-
+    followingInProgress: [],
 
 }
 
@@ -95,17 +103,17 @@ export const usersReducer = (state: InitialStateUsersType = initialStateUsers, a
             }
         }
         case FOLLOW: {
-           return {
-               ...state,
-               users: state.users.map(el => {
-                   if (el.id === action.id) {
-                       return {...el, followed: true}
-                   } else {
-                       return el
-                   }
+            return {
+                ...state,
+                users: state.users.map(el => {
+                    if (el.id === action.id) {
+                        return {...el, followed: true}
+                    } else {
+                        return el
+                    }
 
-               })
-           }
+                })
+            }
         }
         case UNFOLLOW: {
             return {
@@ -119,18 +127,25 @@ export const usersReducer = (state: InitialStateUsersType = initialStateUsers, a
                 })
             }
         }
-            case SET_USERS: {
-                return {...state, users: [...action.users], ...state.users}
+        case SET_USERS: {
+            return {...state, users: [...action.users], ...state.users}
+        } case FOLLOWING_IN_PROGRESS: {
+            return {
+                ...state,
+                followingInProgress: action.isFetching ?
+                    [...state.followingInProgress, action.id] :
+                    state.followingInProgress.filter(id => id !== action.id)
             }
+        }
         default:
             return state
     }
 }
 
-export const followAC = (id: string): FollowActionType => (
+export const followAC = (id: number): FollowActionType => (
     {type: FOLLOW, id}
 )
-export const unFollowAC = (id: string): UnFollowAcnionType => (
+export const unFollowAC = (id: number): UnFollowAcnionType => (
     {type: UNFOLLOW, id}
 )
 export const setNewUsersAC = (users: Array<UserType>): SetNewUsersAcnionType => (
@@ -145,4 +160,7 @@ export const setTotalUsersCountAC = (totalCount: number): SetTotalUsersCountActi
 )
 export const spinnerLoaderFetchingAC = (isFetching: boolean): SpinnerLoaderActionType => (
     {type: SPINNER_LOADER_FETCHING, isFetching}
+)
+export const followingInProgressAC = (isFetching: boolean, id: number): FollowingInProgressActionType => (
+    {type: FOLLOWING_IN_PROGRESS, isFetching, id}
 )

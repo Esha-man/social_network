@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import {RootStoreType} from "../../redux/redux-store";
 import {
-    followAC,
+    followAC, followingInProgressAC,
     setCurrentPageAC,
     setNewUsersAC,
     setTotalUsersCountAC,
@@ -15,24 +15,26 @@ import {SpinnerLoader} from "../commons/SpinnerLoader/SpinnerLoader";
 import {usersAPI} from "../../api/api";
 
 
-type StateToPropsType = {
+type MapStateToPropsType = {
     users: Array<UserType>
     pageSize: number
     totalUsersCount: number
     currentPage: number
     isFetching: boolean
+    followingInProgress: number[]
 }
 
 type DispatchToPropsType = {
-    follow: (userId: string) => void
-    unfollow: (userId: string) => void
+    follow: (userId: number) => void
+    unfollow: (userId: number) => void
     setNewUser: (users: Array<UserType>) => void
     setCurrentPage: (page: number) => void
     setTotalUsersCount: (totalCount: number) => void
     spinnerLoaderFetching: (isFetching: boolean) => void
+    followingInProgressAction: (isFetching: boolean, id: number) => void
 }
 
-export type UsersType = StateToPropsType & DispatchToPropsType
+export type UsersType = MapStateToPropsType & DispatchToPropsType
 
 class UsersContainer extends React.Component<UsersType> {
 
@@ -51,11 +53,6 @@ class UsersContainer extends React.Component<UsersType> {
         this.props.setCurrentPage(pageNum)
         this.props.spinnerLoaderFetching(true)
 
-        // axios
-        //     .get(`https://social-network.samuraijs.com/api/1.0/users?page=${pageNum}&count=${this
-        //         .props.pageSize}`, {
-        //         withCredentials: true,
-        //     })
         usersAPI.getUsers(this.props.pageSize).then(data => {
                 this.props.spinnerLoaderFetching(false)
                 this.props.setNewUser(data.items);
@@ -76,6 +73,8 @@ class UsersContainer extends React.Component<UsersType> {
                 onChangePage={this.onChangePage.bind(this)}
                 currentPage={this.props.currentPage}
                 users={this.props.users}
+                followingInProgressAction={this.props.followingInProgressAction}
+                followingInProgress={this.props.followingInProgress}
 
 
             />
@@ -84,13 +83,14 @@ class UsersContainer extends React.Component<UsersType> {
 
 }
 
-const mapStateToProps = (state: RootStoreType): StateToPropsType => {
+const mapStateToProps = (state: RootStoreType): MapStateToPropsType => {
     return {
         users: state.usersPage.users,
         pageSize: state.usersPage.pageSize,
         totalUsersCount: state.usersPage.totalUsersCount,
         currentPage: state.usersPage.currentPage,
         isFetching: state.usersPage.isFetching,
+        followingInProgress: state.usersPage.followingInProgress,
     }
 }
 
@@ -127,4 +127,5 @@ export default connect(mapStateToProps, {
     setCurrentPage: setCurrentPageAC,
     setTotalUsersCount: setTotalUsersCountAC,
     spinnerLoaderFetching: spinnerLoaderFetchingAC,
+    followingInProgressAction: followingInProgressAC,
 })(UsersContainer)
