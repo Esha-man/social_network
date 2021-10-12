@@ -1,10 +1,7 @@
-import {v1} from "uuid";
-//20163
+import {Dispatch} from "redux";
+import {usersAPI} from "../api/api";
 
-type LocationType = {
-    country: string
-    city: string
-}
+//20163
 
 export type UserType = {
     name: string
@@ -27,8 +24,6 @@ export type InitialStateUsersType = {
     followingInProgress: number[]
 
 }
-//--- action creators types ---//
-
 type FollowActionType = {
     type: "FOLLOW"
     id: number
@@ -82,7 +77,8 @@ export const initialStateUsers: InitialStateUsersType = {
 
 }
 
-export const usersReducer = (state: InitialStateUsersType = initialStateUsers, action: UsersReducerActionType) => {
+export const usersReducer = (state: InitialStateUsersType = initialStateUsers,
+                             action: UsersReducerActionType) => {
     switch (action.type) {
         case SPINNER_LOADER_FETCHING: {
             return {
@@ -129,7 +125,8 @@ export const usersReducer = (state: InitialStateUsersType = initialStateUsers, a
         }
         case SET_USERS: {
             return {...state, users: [...action.users], ...state.users}
-        } case FOLLOWING_IN_PROGRESS: {
+        }
+        case FOLLOWING_IN_PROGRESS: {
             return {
                 ...state,
                 followingInProgress: action.isFetching ?
@@ -164,3 +161,54 @@ export const spinnerLoaderFetchingAC = (isFetching: boolean): SpinnerLoaderActio
 export const followingInProgressAC = (isFetching: boolean, id: number): FollowingInProgressActionType => (
     {type: FOLLOWING_IN_PROGRESS, isFetching, id}
 )
+
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+    return (dispatch: Dispatch) => {  // Thunk
+        dispatch(spinnerLoaderFetchingAC(true))
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
+            debugger
+            dispatch(spinnerLoaderFetchingAC(false))
+            dispatch(setNewUsersAC(data.items))
+            dispatch(setTotalUsersCountAC(data.totalCount))
+        })
+    }
+}
+
+export const changePageThunkCreator = (page: number, pageSize: number) => {
+    return (dispatch: Dispatch) => {  // Thunk
+        dispatch(setCurrentPageAC(page))
+        dispatch(spinnerLoaderFetchingAC(true))
+        usersAPI.getUsers(pageSize).then(data => {
+            dispatch(spinnerLoaderFetchingAC(false))
+            dispatch(setNewUsersAC(data.items))
+        })
+    }
+}
+
+export const unfollowUsersThunkCreator = (userId: number) => {
+    return (dispatch: Dispatch) => {
+
+            dispatch(followingInProgressAC(true, userId))
+            usersAPI.deleteUsers(userId).then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(unFollowAC(userId))
+                }
+                dispatch(followingInProgressAC(false, userId))
+            })
+
+    }
+}
+export const followUsersThunkCreator = (userId: number) => {
+    return (dispatch: Dispatch) => {
+
+        dispatch(followingInProgressAC(true, userId))
+            usersAPI.postUsers(userId).then(data => {
+                if (data.resultCode === 0) {
+                    dispatch(followAC(userId))
+                }
+                dispatch(followingInProgressAC(false, userId))
+            })
+
+
+    }
+}

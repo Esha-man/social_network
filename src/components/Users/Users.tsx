@@ -3,7 +3,6 @@ import {UserType} from "../../redux/users-reducer";
 import avatarDefault from "../../assets/images/avatar_default.png";
 import React from "react";
 import {NavLink} from "react-router-dom";
-import {usersAPI} from "../../api/api";
 
 
 type PropsType = {
@@ -14,9 +13,11 @@ type PropsType = {
     followingInProgress: number[]
 
     onChangePage: (pageNum: number) => void
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    followingInProgressAction: (isFetching: boolean, id: number) => void
+    // follow: (userId: number) => void
+    // unfollow: (userId: number) => void
+    // followingInProgressAction: (isFetching: boolean, id: number) => void
+    followUsersThunk: (userId: number) => void
+    unfollowUsersThunk: (userId: number) => void
 }
 
 export const Users = (props: PropsType) => {
@@ -28,17 +29,17 @@ export const Users = (props: PropsType) => {
         pages.push(i)
     }
 
-
     return (
         <div>
             <div>
                 {pages.map(pageNum =>
 
-                    <span onClick={(event) => props.onChangePage(pageNum)}
-                          className={props.currentPage === pageNum ? styles.selectedPage : ""}>
+                    <span onClick={(event) => props.onChangePage(
+                        pageNum)}
+                          className={props.currentPage === pageNum ? styles.selectedPage :
+                              ""}>
                         {pageNum <= 30 && pageNum + ".."}</span>)}
             </div>
-
 
             {props.users.map((us: UserType) => <div key={us.id}>
               <span>
@@ -50,29 +51,30 @@ export const Users = (props: PropsType) => {
                       </NavLink>
                   </div>
                   <div>
-                      {us.followed === true ? <button disabled={props.followingInProgress.some(id => id === us.id)}
-                                                      onClick={() => {
-                          props.followingInProgressAction(true, us.id)
-                          usersAPI.deleteUsers(us).then(data => {
-                                  if (data.resultCode === 0) {
-                                      props.unfollow(us.id)
-
-                                  }
-                              props.followingInProgressAction(false, us.id)
-                              })
-
-                      }}>Unfollow</button> : <button disabled={props.followingInProgress.some(id => id === us.id)}
-                                                     onClick={() => {
-                          props.followingInProgressAction(true, us.id)
-                          usersAPI.postUsers(us).then(data => {
-                                  if (data.resultCode === 0) {
-                                      props.follow(us.id)
-
-                                  }
-                              props.followingInProgressAction(false, us.id)
-                              })
-
-                      }}>Follow</button>}
+                      {us.followed === true ?
+                          <button disabled={props.followingInProgress.some(id => id === us.id)}
+                                  onClick={() => {
+                                       props.unfollowUsersThunk(us.id)
+                                      // props.followingInProgressAction(true, us.id)
+                                      // usersAPI.deleteUsers(us).then(data => {
+                                      //         if (data.resultCode === 0) {
+                                      //             props.unfollow(us.id)
+                                      //         }
+                                      //     props.followingInProgressAction(false, us.id)
+                                      //     })
+                                  }}>Unfollow</button> :
+                          <button disabled={props.followingInProgress.some(id => id === us.id)}
+                                  onClick={() => {
+                                     props.followUsersThunk(us.id)
+                                      // props.followingInProgressAction(true, us.id)
+                                      // usersAPI.postUsers(us).then(data => {
+                                      //         if (data.resultCode === 0) {
+                                      //             props.follow(us.id)
+                                      //
+                                      //         }
+                                      //     props.followingInProgressAction(false, us.id)
+                                      //     })
+                                  }}>Follow</button>}
                   </div>
               </span>
                 <span>
@@ -84,7 +86,6 @@ export const Users = (props: PropsType) => {
                   <div>{"us.location.city"}</div>
                   <div>{"us.location.country"}</div>
               </span>
-
 
             </div>)}
         </div>

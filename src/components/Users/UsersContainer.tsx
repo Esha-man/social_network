@@ -1,18 +1,15 @@
 import {connect} from "react-redux";
 import {RootStoreType} from "../../redux/redux-store";
 import {
-    followAC, followingInProgressAC,
+    changePageThunkCreator,
+    followAC, followingInProgressAC, getUsersThunkCreator,
     setCurrentPageAC,
-    setNewUsersAC,
-    setTotalUsersCountAC,
-    spinnerLoaderFetchingAC,
-    unFollowAC,
-    UserType
+    unFollowAC, followUsersThunkCreator,
+    UserType, unfollowUsersThunkCreator
 } from "../../redux/users-reducer";
 import React from "react";
 import {Users} from "./Users";
 import {SpinnerLoader} from "../commons/SpinnerLoader/SpinnerLoader";
-import {usersAPI} from "../../api/api";
 
 
 type MapStateToPropsType = {
@@ -25,13 +22,17 @@ type MapStateToPropsType = {
 }
 
 type DispatchToPropsType = {
-    follow: (userId: number) => void
-    unfollow: (userId: number) => void
-    setNewUser: (users: Array<UserType>) => void
-    setCurrentPage: (page: number) => void
-    setTotalUsersCount: (totalCount: number) => void
-    spinnerLoaderFetching: (isFetching: boolean) => void
-    followingInProgressAction: (isFetching: boolean, id: number) => void
+    // follow: (userId: number) => void
+    // unfollow: (userId: number) => void
+    // setNewUser: (users: Array<UserType>) => void
+    // setCurrentPage: (page: number) => void
+    // setTotalUsersCount: (totalCount: number) => void
+    // spinnerLoaderFetching: (isFetching: boolean) => void
+    // followingInProgressAction: (isFetching: boolean, id: number) => void
+    getUsersThunk: (currentPage: number, pageSize: number) => void
+    changePageThunk: (pageNum: number, pageSize: number) => void
+    followUsersThunk: (userId: number) => void
+    unfollowUsersThunk: (userId: number) => void
 }
 
 export type UsersType = MapStateToPropsType & DispatchToPropsType
@@ -40,25 +41,11 @@ class UsersContainer extends React.Component<UsersType> {
 
 
     componentDidMount() {
-        this.props.spinnerLoaderFetching(true)
-        usersAPI.getUsers(this.props.currentPage, this.props.pageSize).then(data => {
-            debugger
-                this.props.spinnerLoaderFetching(false)
-                this.props.setNewUser(data.items)
-                this.props.setTotalUsersCount(data.totalCount)
-            })
+       this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
     }
 
     onChangePage(pageNum: number) {
-        this.props.setCurrentPage(pageNum)
-        this.props.spinnerLoaderFetching(true)
-
-        usersAPI.getUsers(this.props.pageSize).then(data => {
-                this.props.spinnerLoaderFetching(false)
-                this.props.setNewUser(data.items);
-
-            })
-
+        this.props.changePageThunk(pageNum, this.props.pageSize)
     }
 
     render() {
@@ -66,15 +53,17 @@ class UsersContainer extends React.Component<UsersType> {
         return <>
             {this.props.isFetching ? <SpinnerLoader/> : null}
             <Users
-                follow={this.props.follow}
-                unfollow={this.props.unfollow}
+                // follow={this.props.follow}
+                // unfollow={this.props.unfollow}
                 totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 onChangePage={this.onChangePage.bind(this)}
                 currentPage={this.props.currentPage}
                 users={this.props.users}
-                followingInProgressAction={this.props.followingInProgressAction}
+                // followingInProgressAction={this.props.followingInProgressAction}
                 followingInProgress={this.props.followingInProgress}
+                followUsersThunk={this.props.followUsersThunk}
+                unfollowUsersThunk={this.props.unfollowUsersThunk}
 
 
             />
@@ -94,38 +83,17 @@ const mapStateToProps = (state: RootStoreType): MapStateToPropsType => {
     }
 }
 
-// const mapDispatchToProps = (dispatch: Dispatch): DispatchToPropsType => {
-//
-//     return {
-//         follow: (userId: string) => {
-//             dispatch(followAC(userId))
-//         },
-//         unfollow: (userId: string) => {
-//             dispatch(unFollowAC(userId))
-//         },
-//         setNewUser: (users: Array<UserType>) => {
-//             dispatch(setNewUsersAC(users))
-//         },
-//         setCurrentPage: (page: number) => {
-//
-//             dispatch(setCurrentPageAC(page))
-//         },
-//         setTotalUsersCount: (totalCount: number) => {
-//             dispatch(setTotalUsersCountAC(totalCount))
-//         },
-//         spinnerLoaderFetching: (isFetching: boolean) => {
-//             dispatch(spinnerLoaderFetchingAC(isFetching))
-//         },
-//     }
-// }
-
 
 export default connect(mapStateToProps, {
-    follow: followAC,
-    unfollow: unFollowAC,
-    setNewUser: setNewUsersAC,
-    setCurrentPage: setCurrentPageAC,
-    setTotalUsersCount: setTotalUsersCountAC,
-    spinnerLoaderFetching: spinnerLoaderFetchingAC,
-    followingInProgressAction: followingInProgressAC,
+    // follow: followAC,
+    // unfollow: unFollowAC,
+    // setNewUser: setNewUsersAC,
+    // setCurrentPage: setCurrentPageAC,
+    // setTotalUsersCount: setTotalUsersCountAC,
+    // spinnerLoaderFetching: spinnerLoaderFetchingAC,
+    // followingInProgressAction: followingInProgressAC,
+    getUsersThunk: getUsersThunkCreator,
+    changePageThunk: changePageThunkCreator,
+    followUsersThunk: followUsersThunkCreator,
+    unfollowUsersThunk: unfollowUsersThunkCreator,
 })(UsersContainer)

@@ -1,5 +1,7 @@
 import {v1} from "uuid";
 import {AllActionsType} from "./redux-store";
+import {Dispatch} from "redux";
+import {usersAPI} from "../api/api";
 
 
 export type MyPostsType = {
@@ -26,7 +28,8 @@ type SetProfileUserType = {
     profileUser: string
 }
 
-export type ProfileActionsType = NewStatePostType | ChangeNewTextCallbackType | SetProfileUserType
+export type ProfileActionsType = NewStatePostType |
+    ChangeNewTextCallbackType | SetProfileUserType
 
 const NEW_STATE_POST = "NEW-STATE-POST"
 const CHANGE_NEW_TEXT_CALLBACK = "CHANGE-NEW-TEXT-CALLBACK"
@@ -88,4 +91,12 @@ export const SetProfileUserAC = (profileUser: string): SetProfileUserType => {
     return {
         type: SET_PROFILE_USER, profileUser
     }
+}
+
+export  const getProfileThunkCreator = (userId: string) => {
+  return (dispatch: Dispatch) => {
+      usersAPI.getProfile(userId).then(response => {
+          dispatch(SetProfileUserAC(response.data))
+      })
+  }
 }

@@ -8,30 +8,30 @@ type ProfileInfoPropsType = {
 }
 
 export const ProfileInfo = (props: ProfileInfoPropsType) => {
-   const lookingForAJob = () =>{
-       if (props.profileUser.lookingForAJob === true) {
-           return "В поиске работы"
-       } else {
-           return "Работаю"
-       }
-   }
-const myContacts = () => {
-       let contact = props.profileUser.contacts
-    console.log(contact)
-    let div = ""
-      for (let key in contact) {
-          if (contact[key]) {
-              div += contact[key] + " "
-              console.log(`${key}: https://www.${contact[key]}`)
-          }
-      }
+    const lookingForAJob = () => {
+        if (props.profileUser.lookingForAJob === true) {
+            return "В поиске работы"
+        } else {
+            return "Работаю"
+        }
+    }
+    const myContacts = () => {
+        let contact = props.profileUser.contacts
+        console.log(contact)
+        let div = ""
+        for (let key in contact) {
+            if (contact[key]) {
+                div += contact[key] + " "
+                console.log(`${key}: https://www.${contact[key]}`)
+            }
+        }
 
-     return div
-}
+        return div
+    }
 
 
     if (!props.profileUser) {
-        return <SpinnerLoader />
+        return <SpinnerLoader/>
     }
     return (
         <div>
@@ -41,17 +41,17 @@ const myContacts = () => {
                     alt=""/>*/}
             </div>
             <div className={style.description}>
-            <div>
-                {props.profileUser.fullName}
-            </div>
-            <div>
-                <img src={props.profileUser.photos.small ? props.profileUser.photos.small : avatarDefault}/>
-                <div>{props.profileUser.aboutMe}</div>
-                <div>{lookingForAJob()}</div>
-                <div>Контакты для связи: </div>
+                <div>
+                    {props.profileUser.fullName}
+                </div>
+                <div>
+                    <img src={props.profileUser.photos.small ? props.profileUser.photos.small : avatarDefault}/>
+                    <div>{props.profileUser.aboutMe}</div>
+                    <div>{lookingForAJob()}</div>
+                    <div>Контакты для связи:</div>
 
-                <a href={"https://www." + myContacts()}>{myContacts()}</a>
-            </div>
+                    <a href={"https://www." + myContacts()}>{myContacts()}</a>
+                </div>
             </div>
         </div>
     )

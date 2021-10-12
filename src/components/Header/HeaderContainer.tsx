@@ -1,9 +1,9 @@
 import React from "react";
 import {Header} from "./Header";
-import axios from "axios";
 import {connect} from "react-redux";
 import {RootStoreType} from "../../redux/redux-store";
-import {DataType, setAuthUserData} from "../../redux/authorization-reducer";
+import {loginHeaderThunkCreator} from "../../redux/authorization-reducer";
+
 
 
 type MapStateToPropsType = {
@@ -12,7 +12,8 @@ type MapStateToPropsType = {
 }
 
 type MapDispatchToPropsType = {
-    setAuthUserData: (data: DataType) => void
+    // setAuthUserData: (data: DataType) => void
+    loginHeaderThunkCreator: () => void
 }
 
 type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
@@ -20,15 +21,24 @@ type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
 
 class HeaderContainer extends React.Component<HeaderContainerType> {
     componentDidMount() {
-        axios
-            .get("https://social-network.samuraijs.com/api/1.0/auth/me", {
-                withCredentials: true
-            })
-            .then(response => {
-                if (response.data.resultCode === 0) {
-                    this.props.setAuthUserData(response.data.data)
-                }
-            })
+
+        this.props.loginHeaderThunkCreator()
+        // usersAPI.getHeaderLogin().then(response => {
+        //     debugger
+        //     if (response.resultCode === 0) {
+        //         this.props.setAuthUserData(response.data)
+        //     }
+        // })
+
+        // axios
+        //     .get("https://social-network.samuraijs.com/api/1.0/auth/me", {
+        //         withCredentials: true
+        //     })
+        //     .then(response => {
+        //         if (response.data.resultCode === 0) {
+        //             this.props.setAuthUserData(response.data.data)
+        //         }
+        //     })
     }
 
     render() {
@@ -49,4 +59,4 @@ const mapStateToProps = (state: RootStoreType): MapStateToPropsType => ({
 
 })
 
-export default connect(mapStateToProps, {setAuthUserData})(HeaderContainer)
+export default connect(mapStateToProps, {loginHeaderThunkCreator})(HeaderContainer)
