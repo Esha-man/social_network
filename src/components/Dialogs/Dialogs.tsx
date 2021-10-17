@@ -5,14 +5,14 @@ import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
 
 import {DialogPropsType} from "./DialogsContainer";
-
-
+import {Redirect} from "react-router-dom";
 
 
 export const Dialogs = (props: DialogPropsType) => {
 
 
-    const dialogItemsMap = props.dialogs.dialogsData.map(el => <DialogItem key={el.id} name={el.name} id={el.id} sex={el.sex}/>)
+    const dialogItemsMap = props.dialogs.dialogsData.map(el => <DialogItem key={el.id} name={el.name} id={el.id}
+                                                                           sex={el.sex}/>)
     const messageMap = props.dialogs.messageData.map(el => <Message key={el.id} text={el.message}/>)
 
 
@@ -29,7 +29,10 @@ export const Dialogs = (props: DialogPropsType) => {
 
     }
 
-
+    // alert(props.isAuth)
+    // if (props.isAuth === false) {
+    //   return  <Redirect to={"/login"}/>
+    // }
     return (
         <div className={style.dialogs}>
             <div className={style.dialogs_items}>

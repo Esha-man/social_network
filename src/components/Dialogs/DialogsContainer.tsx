@@ -5,11 +5,13 @@ import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import {RootStoreType} from "../../redux/redux-store";
+import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 
 
 
 type MapStatePropsType = {
     dialogs: InitialStateDialogType
+    // isAuth: boolean
 }
 
 type MapDispatchPropsType = {
@@ -21,26 +23,24 @@ export type DialogPropsType = MapStatePropsType & MapDispatchPropsType
 
 const mapStateToProps = (state: RootStoreType): MapStatePropsType => {
     return {
-        dialogs: state.dialogs
+        dialogs: state.dialogs,
+        // isAuth: state.authorization.isAuthorized,
 
     }
 }
 
 const mapDispatchToProps = (dispatch: Dispatch): MapDispatchPropsType => {
 
-
     return {
         textValueChange: (text: string) => {
-            //debugger
             dispatch(CallbackDialogsAC(text))
         },
         addDialog: (dialogs) => {
-           // debugger
             dispatch(NewDialogsPostAC(dialogs.newPostDialogs))
-            // dialogs.newPostDialogs = ''
         }
     }
 }
 
+const AuthRedirectComponent = withAuthRedirectHOC(Dialogs)
 
-export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(Dialogs);
+export const DialogsContainer = connect(mapStateToProps, mapDispatchToProps)(AuthRedirectComponent);

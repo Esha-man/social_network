@@ -1,15 +1,15 @@
 import * as React from "react";
 import {Profile} from "./Profile";
-import {getProfileThunkCreator, SetProfileUserAC} from "../../redux/profile-reducer";
+import {getProfileThunkCreator} from "../../redux/profile-reducer";
 import { connect } from "react-redux";
 import {RootStoreType} from "../../redux/redux-store";
-import {withRouter, RouteComponentProps} from "react-router-dom";
-import {usersAPI} from "../../api/api";
+import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
+import {RouteComponentProps, withRouter} from "react-router-dom";
 
 type MapStateType = {
     profileUser: any
-
 }
+
 type MapDispatchType = {
     // SetProfileUserAC: (userProfile: string) => void
     getProfileThunkCreator: (userId: string) => void
@@ -38,22 +38,23 @@ class ProfileContainer extends React.Component<PropsType> {
     }
 
     render() {
+
         return (
             <div>
-                <Profile {...this.props} profileUser={this.props.profileUser}/>
+                <Profile {...this.props}
+                         profileUser={this.props.profileUser}
+                />
             </div>
         )
     }
 }
 
-const mapStateToProps = (state: RootStoreType): MapStateType => ({
-  profileUser: state.profile.profileUser
-})
 
-export  const WithRouterDataContainerComponent = withRouter(ProfileContainer);
+const mapStateToProps = (state: RootStoreType): MapStateType => {
+  return {profileUser: state.profile.profileUser}
+}
 
-export default connect(mapStateToProps,
-    {
-        // SetProfileUserAC,
-        getProfileThunkCreator,
-    }) (WithRouterDataContainerComponent);
+
+export const WithRouterDataContainerComponent = withRouter(ProfileContainer);
+
+export default withAuthRedirectHOC(connect(mapStateToProps,{getProfileThunkCreator}) (WithRouterDataContainerComponent));

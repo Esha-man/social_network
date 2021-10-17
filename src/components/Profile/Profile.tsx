@@ -10,10 +10,10 @@ type ProfilePropsType = {
 }
 
 export const Profile = (props: ProfilePropsType) => {
-
+debugger
     return (
         <div>
-            <ProfileInfo profileUser={props.profileUser}/>
+            <ProfileInfo profileUser={props.profileUser} />
             <MyPostsContainer/>
         </div>
     )

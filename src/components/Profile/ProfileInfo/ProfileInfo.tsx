@@ -2,12 +2,16 @@ import React from "react";
 import style from "../Profile.module.css"
 import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
 import avatarDefault from "../../../assets/images/avatar_default.png";
+import {Redirect} from "react-router-dom";
 
 type ProfileInfoPropsType = {
     profileUser: any
+
 }
 
 export const ProfileInfo = (props: ProfileInfoPropsType) => {
+
+
     const lookingForAJob = () => {
         if (props.profileUser.lookingForAJob === true) {
             return "В поиске работы"

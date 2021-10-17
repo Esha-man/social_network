@@ -52,7 +52,9 @@ export const setAuthUserData = (data: DataType): SetAuthUserDataType => ({
 
 export const loginHeaderThunkCreator = () => {
     return (dispatch: Dispatch) => {
+        debugger
         usersAPI.getHeaderLogin().then(response => {
+
             if (response.resultCode === 0) {
                 dispatch(setAuthUserData(response.data))
             }
