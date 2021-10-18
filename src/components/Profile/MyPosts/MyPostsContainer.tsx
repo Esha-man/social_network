@@ -3,11 +3,9 @@ import React from "react";
 
 import {newStatePostAC, ChangeNewTextCallbackAC, initialStateProfileReducerType} from "../../../redux/profile-reducer"
 import {MyPosts} from "./MyPosts";
-
-
-import {Dispatch, Store} from "redux";
 import {RootStoreType} from "../../../redux/redux-store";
 import {connect} from "react-redux";
+import {compose} from "redux";
 
 
 
@@ -26,21 +24,8 @@ const mapStateToProps = (state: RootStoreType) => {
         profile: state.profile
     }
 }
-// const mapDispatchToProps = (dispatch: Dispatch) => {
-//     return {
-//         newPost: ()=> {
-//             dispatch(newStatePostAC())
-//         },
-//         changeTextareaHandler: (text: string)=> {
-//             let action = ChangeNewTextCallbackAC(text)
-//             dispatch(action)
-//         }
-//     }
-// }
 
-// export const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps)(MyPosts)
-
-export const MyPostsContainer = connect(mapStateToProps, {
-    newPost: newStatePostAC,
-    changeTextareaHandler: ChangeNewTextCallbackAC,
-})(MyPosts)
+export const MyPostsContainer = compose<React.ComponentType>(
+    connect(mapStateToProps, {newPost: newStatePostAC, changeTextareaHandler: ChangeNewTextCallbackAC})
+)
+(MyPosts)

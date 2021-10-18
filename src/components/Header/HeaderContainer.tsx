@@ -3,6 +3,7 @@ import {Header} from "./Header";
 import {connect} from "react-redux";
 import {RootStoreType} from "../../redux/redux-store";
 import {loginHeaderThunkCreator} from "../../redux/authorization-reducer";
+import {compose} from "redux";
 
 
 
@@ -59,4 +60,7 @@ const mapStateToProps = (state: RootStoreType): MapStateToPropsType => ({
 
 })
 
-export default connect(mapStateToProps, {loginHeaderThunkCreator})(HeaderContainer)
+export default compose<React.ComponentType>(
+    connect(mapStateToProps, {loginHeaderThunkCreator})
+)
+(HeaderContainer)
