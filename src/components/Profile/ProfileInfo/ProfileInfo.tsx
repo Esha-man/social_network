@@ -2,11 +2,12 @@ import React from "react";
 import style from "../Profile.module.css"
 import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
 import avatarDefault from "../../../assets/images/avatar_default.png";
-import {Redirect} from "react-router-dom";
+import {ProfileStatus} from "../ProfileStatus/ProfileStatus";
 
 type ProfileInfoPropsType = {
     profileUser: any
-
+    status: string
+updateStatus: (status: string)=> void
 }
 
 export const ProfileInfo = (props: ProfileInfoPropsType) => {
@@ -19,18 +20,23 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
             return "Работаю"
         }
     }
+
     const myContacts = () => {
         let contact = props.profileUser.contacts
-        console.log(contact)
-        let div = ""
+
+        let contacts = []
+        // let keys =[]
         for (let key in contact) {
             if (contact[key]) {
-                div += contact[key] + " "
+                // contacts.push(contact[key])
+                // keys.push(key)
+                contacts.push(`${key}: https://www.${contact[key]}`)
                 console.log(`${key}: https://www.${contact[key]}`)
             }
-        }
 
-        return div
+        }
+        return contacts.map(el => <div>{el}</div>)
+
     }
 
 
@@ -50,11 +56,14 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                 </div>
                 <div>
                     <img src={props.profileUser.photos.small ? props.profileUser.photos.small : avatarDefault}/>
-                    <div>{props.profileUser.aboutMe}</div>
-                    <div>{lookingForAJob()}</div>
-                    <div>Контакты для связи:</div>
 
-                    <a href={"https://www." + myContacts()}>{myContacts()}</a>
+                    <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>  {/*STATUS*/}
+
+                    {/*<div>{props.profileUser.aboutMe}</div>*/}
+                    {/*<div>{lookingForAJob()}</div>*/}
+                    {/*<div>Контакты для связи:</div>*/}
+
+                    {/*<a href={"https://www." + myContacts()}>{myContacts()}</a>*/}
                 </div>
             </div>
         </div>

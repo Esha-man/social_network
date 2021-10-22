@@ -7,13 +7,18 @@ import {MyPostsContainer} from "./MyPosts/MyPostsContainer";
 
 type ProfilePropsType = {
     profileUser: any
+    status: string
+    updateStatus: (status: string) => void
 }
 
 export const Profile = (props: ProfilePropsType) => {
-debugger
     return (
         <div>
-            <ProfileInfo profileUser={props.profileUser} />
+            <ProfileInfo
+                profileUser={props.profileUser}
+                status={props.status}
+                updateStatus={props.updateStatus}
+            />
             <MyPostsContainer/>
         </div>
     )

@@ -1,4 +1,4 @@
-import {usersAPI} from "../api/api";
+import {authorizationAPI, usersAPI} from "../api/api";
 import {Dispatch} from "redux";
 
 const SET_AUTH_USER_DATA = "SET_AUTH_USER_DATA"
@@ -52,8 +52,7 @@ export const setAuthUserData = (data: DataType): SetAuthUserDataType => ({
 
 export const loginHeaderThunkCreator = () => {
     return (dispatch: Dispatch) => {
-        debugger
-        usersAPI.getHeaderLogin().then(response => {
+        authorizationAPI.getHeaderLogin().then(response => {
 
             if (response.resultCode === 0) {
                 dispatch(setAuthUserData(response.data))
