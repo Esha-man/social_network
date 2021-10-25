@@ -1,8 +1,5 @@
-import React from "react";
 import {Friends} from "./Friends";
-
 import {connect} from "react-redux";
-
 import {FriendsType} from "../../redux/sidebar-reducer";
 import {RootStoreType} from "../../redux/redux-store";
 

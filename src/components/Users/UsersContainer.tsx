@@ -2,14 +2,15 @@ import {connect} from "react-redux";
 import {RootStoreType} from "../../redux/redux-store";
 import {
     changePageThunkCreator,
-    followAC, followingInProgressAC, getUsersThunkCreator,
-    setCurrentPageAC,
-    unFollowAC, followUsersThunkCreator,
+    getUsersThunkCreator,
+    followUsersThunkCreator,
     UserType, unfollowUsersThunkCreator
 } from "../../redux/users-reducer";
 import React from "react";
 import {Users} from "./Users";
 import {SpinnerLoader} from "../commons/SpinnerLoader/SpinnerLoader";
+import {compose} from "redux";
+import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 
 
 type MapStateToPropsType = {
@@ -84,16 +85,20 @@ const mapStateToProps = (state: RootStoreType): MapStateToPropsType => {
 }
 
 
-export default connect(mapStateToProps, {
-    // follow: followAC,
-    // unfollow: unFollowAC,
-    // setNewUser: setNewUsersAC,
-    // setCurrentPage: setCurrentPageAC,
-    // setTotalUsersCount: setTotalUsersCountAC,
-    // spinnerLoaderFetching: spinnerLoaderFetchingAC,
-    // followingInProgressAction: followingInProgressAC,
-    getUsersThunk: getUsersThunkCreator,
-    changePageThunk: changePageThunkCreator,
-    followUsersThunk: followUsersThunkCreator,
-    unfollowUsersThunk: unfollowUsersThunkCreator,
-})(UsersContainer)
+// export default connect(mapStateToProps, {
+//
+//     getUsersThunk: getUsersThunkCreator,
+//     changePageThunk: changePageThunkCreator,
+//     followUsersThunk: followUsersThunkCreator,
+//     unfollowUsersThunk: unfollowUsersThunkCreator,
+// })(UsersContainer)
+
+export default compose<React.ComponentType>(
+    withAuthRedirectHOC,
+    connect(mapStateToProps, {
+        getUsersThunk: getUsersThunkCreator,
+        changePageThunk: changePageThunkCreator,
+        followUsersThunk: followUsersThunkCreator,
+        unfollowUsersThunk: unfollowUsersThunkCreator,
+    })
+)(UsersContainer)
