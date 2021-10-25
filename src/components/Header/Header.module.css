@@ -1,19 +1,23 @@
-.header {
-    grid-area: h;
-    background-color: #408703;
+.headerContainer {
+    height: 40px;
+    width: 100%;
+display: flex;
+    flex-direction: row;
+    justify-content: center;
+
 }
-.header img {
-    margin-top: 4px;
-    margin-left: 3px;
-    width: 90px;
-    border-radius: 20px;
-    /*border-bottom-right-radius: 10px;
-    border-top-right-radius: 10px;*/
+
+.headerBody {
+    width: 90%;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
 }
 
 .loginBlock {
     float: right;
-    background-color: blue;
+    background-color: #dacbcb;
     border: 1px solid black;
     touch-action: manipulation;
     cursor: pointer;
@@ -25,3 +29,22 @@
 .loginBlock:active {
     border: 1px solid #c6f6c9;
 }
+
+.logo {
+
+}
+
+/*.header {*/
+/*    grid-area: h;*/
+/*    background-color: #408703;*/
+/*}*/
+/*.header img {*/
+/*    margin-top: 4px;*/
+/*    margin-left: 3px;*/
+/*    width: 90px;*/
+/*    border-radius: 20px;*/
+/*    !*border-bottom-right-radius: 10px;*/
+/*    border-top-right-radius: 10px;*!*/
+/*}*/
+
+

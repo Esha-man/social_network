@@ -1,47 +1,47 @@
-.dialogs {
-    display: grid;
-    grid-template-columns: 2fr 10fr;
+/*.dialogs {*/
+/*    display: grid;*/
+/*    grid-template-columns: 2fr 10fr;*/
 
-}
+/*}*/
 
-.dialogs_items {
-    padding: 10px;
+/*.dialogs_items {*/
+/*    padding: 10px;*/
 
-}
+/*}*/
 
-.dialogs_items .active {
-    color: white;
-}
-.dialogs_items img {
-    width: 40px;
-    border-radius: 20px;
+/*.dialogs_items .active {*/
+/*    color: white;*/
+/*}*/
+/*.dialogs_items img {*/
+/*    width: 40px;*/
+/*    border-radius: 20px;*/
 
-}
+/*}*/
 
-.dialog a {
+/*.dialog a {*/
 
-    text-decoration: none;
-}
+/*    text-decoration: none;*/
+/*}*/
 
-.all_messages {
-    padding: 10px;
-}
+/*.all_messages {*/
+/*    padding: 10px;*/
+/*}*/
 
-.message {
+/*.message {*/
 
-}
-.dialogs button {
-    background-color: darkgreen;
-    border: 1px solid black;
-    /*text-transform: uppercase;*/
-    touch-action: manipulation;
-    cursor: pointer;
-    font-size: xx-small;
-    width: 50px;
-    height: 20px;
-    color: black;
-}
-.dialogs button:active {
-    border: 1px solid #c6f6c9;
-    color: white;
-}
+/*}*/
+/*.dialogs button {*/
+/*    background-color: darkgreen;*/
+/*    border: 1px solid black;*/
+/*    !*text-transform: uppercase;*!*/
+/*    touch-action: manipulation;*/
+/*    cursor: pointer;*/
+/*    font-size: xx-small;*/
+/*    width: 50px;*/
+/*    height: 20px;*/
+/*    color: black;*/
+/*}*/
+/*.dialogs button:active {*/
+/*    border: 1px solid #c6f6c9;*/
+/*    color: white;*/
+/*}*/
