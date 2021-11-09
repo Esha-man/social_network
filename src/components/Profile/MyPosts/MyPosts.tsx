@@ -3,6 +3,7 @@ import style from "./MyPosts.module.css"
 import {Post} from "./Post/Post";
 import {ProfilePropsType} from "./MyPostsContainer";
 import {MyPostsType} from "../../../redux/profile-reducer";
+import {AddPostProfileForm} from "../AddPostProfileForm/AddPostProfileForm";
 
 
 
@@ -39,8 +40,10 @@ export const MyPosts = (props: ProfilePropsType) => {
             </div>
             <div>
                 <button onClick={startNewPost}>Add post</button>
-                <button>Remove post</button>
+                {/*<button>Remove post</button>*/}
             </div>
+
+            <AddPostProfileForm/>
 
             <div className={style.post}>
 

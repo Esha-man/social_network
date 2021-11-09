@@ -42,6 +42,8 @@ class UsersContainer extends React.Component<UsersType> {
 
 
     componentDidMount() {
+        
+    debugger
        this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
     }
 

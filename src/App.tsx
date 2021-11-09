@@ -6,12 +6,12 @@ import {News} from "./components/News/News";
 import {Settings} from "./components/Settings/Settings";
 import {Music} from "./components/Music/Music";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer"
-import {BrowserRouter, Route} from 'react-router-dom'
+import {BrowserRouter, Route, Redirect} from 'react-router-dom'
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import {Login} from "./components/Login/Login";
-
+import {NotFound} from "./components/commons/NotFound/NotFound"
 
 function App() {
     return (
@@ -34,7 +34,9 @@ function App() {
                         <Route path={"/music"} render={() => <Music/>}/>
                         <Route path={"/settings"} render={() => <Settings/>}/>
                         <Route path={"/users"} render={() => <UsersContainer/>}/>
-                        <Route path={"/login"} render={() => <Login/>}/>
+                        <Route path={"/login"} render={() => <Login />} />
+                        <Route path={"/404"} render={() => <NotFound />} />
+                        <Redirect  from={"*"} to={"/404"}  />
                     </div>
 
                 </div>

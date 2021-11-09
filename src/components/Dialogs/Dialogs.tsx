@@ -5,6 +5,7 @@ import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
 
 import {DialogPropsType} from "./DialogsContainer";
+import {DialogForm} from "./DialogForm/DialogForm";
 
 
 export const Dialogs = (props: DialogPropsType) => {
@@ -21,17 +22,19 @@ export const Dialogs = (props: DialogPropsType) => {
     }
 
     const setTextValueChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        debugger
+
         let text = e.currentTarget.value
         props.textValueChange(text)
-
-
+    }
+    const sub = (values: any) => {
+        alert("ssssss")
     }
 
     // alert(props.isAuth)
     // if (props.isAuth === false) {
     //   return  <Redirect to={"/login"}/>
     // }
+
     return (
         <div className={style.dialogs}>
             <div className={style.dialogs_items}>
@@ -41,14 +44,15 @@ export const Dialogs = (props: DialogPropsType) => {
             <div className={style.all_messages}>
                 {messageMap}
             </div>
+
             <div>
                 <textarea onChange={setTextValueChange} value={props.dialogs.newPostDialogs}/>
                 <div>
                     <button onClick={clickAddDialog}>Add post</button>
                 </div>
-
             </div>
 
+            <DialogForm />
         </div>
     )
 }

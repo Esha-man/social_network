@@ -1,8 +1,8 @@
 import styles from "./users.module.css";
-import {UserType} from "../../redux/users-reducer";
+import { UserType } from "../../redux/users-reducer";
 import avatarDefault from "../../assets/images/avatar_default.png";
 import React from "react";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 
 type PropsType = {
@@ -21,7 +21,7 @@ type PropsType = {
 }
 
 export const Users = (props: PropsType) => {
-
+debugger
     let pagesCount = Math.ceil(props
         .totalUsersCount / props.pageSize);
     let pages = []
@@ -36,56 +36,56 @@ export const Users = (props: PropsType) => {
 
                     <span onClick={(event) => props.onChangePage(
                         pageNum)}
-                          className={props.currentPage === pageNum ? styles.selectedPage :
-                              ""}>
+                        className={props.currentPage === pageNum ? styles.selectedPage :
+                            ""}>
                         {pageNum <= 30 && pageNum + ".."}</span>)}
             </div>
 
             {props.users.map((us: UserType) => <div key={us.id}>
-              <span>
-                  <div>
-                      <NavLink to={"/profile/" + us.id}>
-                          <img src={us.photos.small !== null ? us.photos.small :
-                              avatarDefault}
-                               className={styles.usersAvatars}/>
-                      </NavLink>
-                  </div>
-                  <div>
-                      {us.followed === true ?
-                          <button disabled={props.followingInProgress.some(id => id === us.id)}
-                                  onClick={() => {
-                                       props.unfollowUsersThunk(us.id)
-                                      // props.followingInProgressAction(true, us.id)
-                                      // usersAPI.deleteUsers(us).then(data => {
-                                      //         if (data.resultCode === 0) {
-                                      //             props.unfollow(us.id)
-                                      //         }
-                                      //     props.followingInProgressAction(false, us.id)
-                                      //     })
-                                  }}>Unfollow</button> :
-                          <button disabled={props.followingInProgress.some(id => id === us.id)}
-                                  onClick={() => {
-                                     props.followUsersThunk(us.id)
-                                      // props.followingInProgressAction(true, us.id)
-                                      // usersAPI.postUsers(us).then(data => {
-                                      //         if (data.resultCode === 0) {
-                                      //             props.follow(us.id)
-                                      //
-                                      //         }
-                                      //     props.followingInProgressAction(false, us.id)
-                                      //     })
-                                  }}>Follow</button>}
-                  </div>
-              </span>
                 <span>
-                  <div>{us.name}</div>
+                    <div>
+                        <NavLink to={"/profile/" + us.id}>
+                            <img src={us.photos.small !== null ? us.photos.small :
+                                avatarDefault}
+                                className={styles.usersAvatars} />
+                        </NavLink>
+                    </div>
+                    <div>
+                        {us.followed === true ?
+                            <button disabled={props.followingInProgress.some(id => id === us.id)}
+                                onClick={() => {
+                                    props.unfollowUsersThunk(us.id)
+                                    // props.followingInProgressAction(true, us.id)
+                                    // usersAPI.deleteUsers(us).then(data => {
+                                    //         if (data.resultCode === 0) {
+                                    //             props.unfollow(us.id)
+                                    //         }
+                                    //     props.followingInProgressAction(false, us.id)
+                                    //     })
+                                }}>Unfollow</button> :
+                            <button disabled={props.followingInProgress.some(id => id === us.id)}
+                                onClick={() => {
+                                    props.followUsersThunk(us.id)
+                                    // props.followingInProgressAction(true, us.id)
+                                    // usersAPI.postUsers(us).then(data => {
+                                    //         if (data.resultCode === 0) {
+                                    //             props.follow(us.id)
+                                    //
+                                    //         }
+                                    //     props.followingInProgressAction(false, us.id)
+                                    //     })
+                                }}>Follow</button>}
+                    </div>
+                </span>
+                <span>
+                    <div>{us.name}</div>
                     <div>{us.status !== null ? <span>Status: {us.status}</span> :
                         <span></span>}</div>
-              </span>
+                </span>
                 <span>
-                  <div>{"us.location.city"}</div>
-                  <div>{"us.location.country"}</div>
-              </span>
+                    <div>{"us.location.city"}</div>
+                    <div>{"us.location.country"}</div>
+                </span>
 
             </div>)}
         </div>
