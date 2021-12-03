@@ -1,6 +1,8 @@
 import React from 'react';
-import { ErrorMessage, useFormik } from 'formik';
-import { validate } from 'uuid';
+import {ErrorMessage, Field, useFormik} from 'formik';
+import {Formik} from 'formik';
+import * as Yup from 'yup';
+
 
 type ErrorsType = {
     email?: string
@@ -8,7 +10,54 @@ type ErrorsType = {
     rememberMe?: boolean
 }
 
+
 export const Login = () => {
+
+
+    return (
+        <Formik
+            initialValues={{email: "", password: "", rememberMe: false}}
+            validationSchema={Yup.object({
+                email: Yup.string().email('Invalid email address').required('Email required'),
+                password: Yup.string().min(4, 'Password must be 4 characters but less 10')
+                    .max(10, 'Password must be 4 characters but less 10')
+                    .required('Password required')
+            })}
+            onSubmit={(values, {setSubmitting}) => {
+                setTimeout(() => {
+                    alert(JSON.stringify(values))
+                    setSubmitting(false)
+                }, 400)
+            }}
+        >
+            {formik => (
+                <form onSubmit={formik.handleSubmit}>
+                    <div>
+                        <div><label htmlFor="email">Email Address</label></div>
+                        <div><Field name="email" type="email"/></div>
+                        <div style={{color: "red"}}><ErrorMessage name="email"/></div>
+                    </div>
+                    <div>
+                        <div><label htmlFor="password">Your Password</label></div>
+                        <div><Field name="password" type="password"/></div>
+                        <div style={{color: "red"}}><ErrorMessage name="password"/></div>
+                    </div>
+                    <div>
+                        <div><label htmlFor="rememberMe">Remember Me</label></div>
+                        <div><Field name="rememberMe" type="checkbox"/></div>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            )}
+
+        </Formik>
+    )
+}
+
+
+/// ---------------------------Old version of form --------------------------------///
+
+export const FormikSignUp = () => {
 
     const formik = useFormik({
         initialValues: {
@@ -16,22 +65,13 @@ export const Login = () => {
             password: "",
             rememberMe: false,
         },
-        validate: values => {
-            const errors: ErrorsType = {}
-            if (!values.email) {
-                errors.email = "Email is required."
-            } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
-                errors.email = "Please enter valid email address"
-            }
-
-            if (!values.password) {
-                errors.password = "Password required"
-            } else if (values.password.length < 5 || values.password.length > 10) {
-                errors.password = "Password must be 5 characters but less 10"
-            }
-            return errors
-        },
-        onSubmit: values => {
+        validationSchema: Yup.object({
+            email: Yup.string().email('Invalid email address').required('Email required'),
+            password: Yup.string().min(4, 'Password must be 4 characters but less 10')
+                .max(10, 'Password must be 4 characters but less 10')
+                .required('Password required'),
+        }),
+        onSubmit: (values) => {
             alert(JSON.stringify(values))
         }
     })
@@ -43,38 +83,34 @@ export const Login = () => {
                 <div>
                     <input
                         id="email"
-                        name="email"
                         type="email"
-                        // placeholder="enter email"
-                        onChange={formik.handleChange}
-                        value={formik.values.email}
+                        {...formik.getFieldProps("email")}
+
                     />
                 </div>
-                {formik.errors.email ? <div style={{color: "red"}}>{formik.errors.email}</div> : null}
+                {formik.touched.email && formik.errors.email ? <div style={{color: "red"}}>{formik.errors.email}</div> :
+                    <div></div>}
             </div>
             <div>
-                <label htmlFor="email">Your Password</label>
+                <label htmlFor="password">Your Password</label>
                 <div>
                     <input
                         id="password"
-                        name="password"
                         type="password"
-                        // placeholder="enter password"
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
+                        {...formik.getFieldProps("password")}
                     />
                 </div>
-                {formik.errors.password ? <div style={{color: "red"}}>{formik.errors.password}</div> : null}
+                {formik.touched.password && formik.errors.password ?
+                    <div style={{color: "red"}}>{formik.errors.password}</div> : <div></div>}
             </div>
             <div>
-                <label htmlFor="email">Remember Me</label>
+                <label htmlFor="rememberMe">Remember Me</label>
                 <div>
                     <input
                         id="rememberMe"
-                        name="rememberMe"
                         type="checkBox"
-                        onChange={formik.handleChange}
-                        value={formik.values.password}
+                        {...formik.getFieldProps("rememberMe")}
+
                     />
                 </div>
                 <button type="submit">Submit</button>
@@ -82,3 +118,8 @@ export const Login = () => {
         </form>
     )
 }
+
+///------------------------------ end old form -----------------------------------///
+
+
+
