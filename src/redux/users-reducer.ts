@@ -166,7 +166,7 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
     return (dispatch: Dispatch) => {  // Thunk
         dispatch(spinnerLoaderFetchingAC(true))
         usersAPI.getUsers(currentPage, pageSize).then(data => {
-            debugger
+
             dispatch(spinnerLoaderFetchingAC(false))
             dispatch(setNewUsersAC(data.items))
             dispatch(setTotalUsersCountAC(data.totalCount))

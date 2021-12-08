@@ -12,13 +12,14 @@ export type MyPostsType = {
 
 export type initialStateProfileReducerType = {
     myPostsData: Array<MyPostsType>
-    textAreaValue: string
+    // textAreaValue: string
     profileUser: string
     status: string
 }
 
 type NewStatePostType = {
     type: "NEW-STATE-POST"
+    text: string
 }
 type ChangeNewTextCallbackType = {
     type: "CHANGE-NEW-TEXT-CALLBACK"
@@ -51,7 +52,7 @@ let initialState: initialStateProfileReducerType = {
         {id: v1(), likes: 2, post: "Hi"},
         {id: v1(), likes: 3, post: "Hi"},
     ],
-    textAreaValue: "",
+    // textAreaValue: "",
     profileUser: "",
     status: "",
 }
@@ -62,18 +63,18 @@ export const profileReducer = (state: initialStateProfileReducerType = initialSt
 
     switch (action.type) {
         case NEW_STATE_POST:
-            const newPostGen: MyPostsType = {id: v1(), likes: 666, post: state.textAreaValue}
+            const newPost: MyPostsType = {id: v1(), likes: 6, post: action.text}
             return {
                 ...state,
-                myPostsData: [...state.myPostsData, newPostGen],
-                textAreaValue: "",
+                myPostsData: [...state.myPostsData, newPost],
+                // textAreaValue: "",
             }
 
-        case CHANGE_NEW_TEXT_CALLBACK:
-            return {
-                ...state,
-                textAreaValue: action.textProfile
-            }
+        // case CHANGE_NEW_TEXT_CALLBACK:
+        //     return {
+        //         ...state,
+        //         textAreaValue: action.textProfile
+        //     }
         case SET_PROFILE_USER:
             return {
                 ...state,
@@ -90,16 +91,16 @@ export const profileReducer = (state: initialStateProfileReducerType = initialSt
 
 }
 
-export const newStatePostAC = (): NewStatePostType => {
+export const newStatePostAC = (text: string): NewStatePostType => {
     return {
-        type: NEW_STATE_POST
+        type: NEW_STATE_POST, text
     }
 }
-export const ChangeNewTextCallbackAC = (text: string): ChangeNewTextCallbackType => {
-    return {
-        type: CHANGE_NEW_TEXT_CALLBACK, textProfile: text
-    }
-}
+// export const ChangeNewTextCallbackAC = (text: string): ChangeNewTextCallbackType => {
+//     return {
+//         type: CHANGE_NEW_TEXT_CALLBACK, textProfile: text
+//     }
+// }
 export const SetProfileUserAC = (profileUser: string): SetProfileUserType => {
     return {
         type: SET_PROFILE_USER, profileUser

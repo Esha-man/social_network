@@ -15,7 +15,7 @@ export type MessageType = {
 export type InitialStateDialogType = {
     dialogsData: Array<DialogsType>
     messageData: Array<MessageType>
-    newPostDialogs: string
+    // newPostDialogs: string
 }
 
 export type NewDialogsPostType = {
@@ -47,7 +47,7 @@ let initialState: InitialStateDialogType = {
         {id: v1(), message: "Hi"},
         {id: v1(), message: "Hi"},
     ],
-    newPostDialogs: "",
+    // newPostDialogs: "",
 }
 
 
@@ -61,14 +61,14 @@ export const dialogsReducer = (state: InitialStateDialogType = initialState, act
             return {
                 ...state,
                 messageData: [...state.messageData, newPost],
-                newPostDialogs: "",
+                // newPostDialogs: "",
             }
 
-        case CALLBACK_DIALOGS:
-            return {
-                ...state,
-                newPostDialogs: action.textDialogs
-            }
+        // case CALLBACK_DIALOGS:
+        //     return {
+        //         ...state,
+        //         newPostDialogs: action.textDialogs
+        //     }
         default:
             return state
     }
@@ -77,18 +77,17 @@ export const dialogsReducer = (state: InitialStateDialogType = initialState, act
 
 
 export const NewDialogsPostAC = (text: string): NewDialogsPostType => {
-
     return {
         type: NEW_DIALOGS_POST,
-        text: text
+        text,
     }
 }
 
-export const CallbackDialogsAC = (text: string): CallbackDialogsType => {
-
-    return {
-        type: CALLBACK_DIALOGS,
-        textDialogs: text
-    }
-}
+// export const CallbackDialogsAC = (text: string): CallbackDialogsType => {
+//
+//     return {
+//         type: CALLBACK_DIALOGS,
+//         textDialogs: text
+//     }
+// }
 
