@@ -21,7 +21,7 @@ export type AllActionsType = ProfileActionsType | NewDialogsPostType
      }
  );
 
-export type RootStoreType = ReturnType<typeof rootReducer>
+export type RootStateType = ReturnType<typeof rootReducer>
 
 export const store = createStore(rootReducer, applyMiddleware(thunk))
 

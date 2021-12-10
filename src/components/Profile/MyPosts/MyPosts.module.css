@@ -1,6 +1,7 @@
-/*.posts {*/
-/*    padding: 10px;*/
-/*}*/
-/*.post {*/
-/*    padding: 10px;*/
-/*}*/
+.posts {
+    padding: 10px;
+}
+.post {
+    padding: 10px;
+    word-wrap: break-word;
+}

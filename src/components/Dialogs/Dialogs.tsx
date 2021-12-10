@@ -16,12 +16,6 @@ export const Dialogs = (props: DialogPropsType) => {
                                                                            sex={el.sex}/>)
     const messageMap = props.dialogs.messageData.map(el => <Message key={el.id} text={el.message}/>)
 
-
-    // const setTextValueChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    //     let text = e.currentTarget.value
-    //     props.textValueChange(text)
-    // }
-
     const clickAddDialog = (textarea: string) => {
         props.addDialog(textarea)
     }
@@ -34,7 +28,7 @@ export const Dialogs = (props: DialogPropsType) => {
             </div>
             <div className={style.all_messages}>
                 {messageMap}
-            </div> 
+            </div>
             <TextareaForm clickCallback={clickAddDialog} />
         </div>
     )

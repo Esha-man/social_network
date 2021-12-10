@@ -25,6 +25,7 @@
 
 .all_messages {
     padding: 10px;
+    word-wrap: break-word;
 }
 
 /*.message {*/

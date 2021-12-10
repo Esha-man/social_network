@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 
 
@@ -7,7 +7,7 @@ import axios from "axios";
 const instance = axios.create({
     withCredentials: true,
     baseURL: "https://social-network.samuraijs.com/api/1.0/",
-    headers: {"api-key": "de66d353-a705-4b5f-bcd1-8006ed2d9ab2"},
+    headers: {"api-key": "d30e0c3d-5139-44a7-a2e6-fd3b39685f7f"},
 })
 
 export const usersAPI = {
@@ -44,29 +44,31 @@ export const profileAPI = {
 }
 
 export const authorizationAPI = {
-    getHeaderLogin() { // Header Login-button
+    me() { // Header Login-button
         return instance.get("auth/me").then(response => response.data)
+    },
+    login(email: string, password: string, rememberMe: boolean = false) {
+        return instance.post<ResponceType>("auth/login", {email, password, rememberMe})
+            .then(response => response.data)
+    },
+    logOut() {
+        return instance.delete<ResponceType>("auth/login")
+            .then(response => response.data)
     }
 }
 
 
 
-// // UsersContainer
-// export const getUsers = (currentPage: number = 1, pageSize: number = 20) => {
-//  return instance.get(`users?page=${currentPage}&count=${pageSize}`).then(response => response.data)
-// }
-//
-// // Users
-// export const deleteUsers = (us: UserType) => {
-//  return instance.delete(`follow/${us.id}`).then(response => response.data)
-// }
-//
-// export const postUsers = (us: UserType) => {
-//  return instance.post(`follow/${us.id}`).then(response => response.data)
-// }
-//
-// // ProfileContainer
-// export const getProfile = (userId: string) => {
-//  return instance.get(`profile/` + userId)
-// }
+
+export type LoginType = {
+    email: string
+    password: string
+    rememberMe?: boolean
+    captcha?: boolean
+}
+type ResponceType<D = {}> = {
+    resultCode: number
+    messages: string[]
+    data: D
+}
 

@@ -1,6 +1,8 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
-import style from "./Header.module.css";
+import stylesModule from "./Header.module.css";
+import {useDispatch} from "react-redux";
+import {logOutTC} from "../../redux/authorization-reducer";
 
 type HeaderPropsType = {
     login: string
@@ -8,18 +10,29 @@ type HeaderPropsType = {
 }
 
 export const Header = (props: HeaderPropsType) => {
+    const dispatch = useDispatch()
+    // if (props.isAuthorized) {
+    //     return <span>Logout</span>
+    // }
+    const logoutCallback = () => {
+       return dispatch(logOutTC())
 
-
+    }
     return (
-        <div className={style.headerContainer}>
-            <div className={style.headerBody}>
-                <div className={style.logo}>
+        <div className={stylesModule.headerContainer}>
+            <div className={stylesModule.headerBody}>
+                <div className={stylesModule.logo}>
                     Social network
                 </div>
-
-                <div className={style.loginBlock}>
-                    {props.isAuthorized ? props.login : <NavLink to={"/login"}>Login</NavLink>}
+                <div>
+                    <div>
+                        {props.isAuthorized && props.login }
+                    </div>
+                    <div onClick={logoutCallback} className={stylesModule.loginBlock}>
+                        {props.isAuthorized ? <span>Logout</span> : <NavLink to={"/login"}>Login</NavLink>}
+                    </div>
                 </div>
+
 
             </div>
 

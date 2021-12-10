@@ -3,7 +3,7 @@ import {Dialogs} from "./Dialogs";
 
 import {connect} from "react-redux";
 import {compose, Dispatch} from "redux";
-import {RootStoreType} from "../../redux/redux-store";
+import {RootStateType} from "../../redux/redux-store";
 import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 
 
@@ -18,7 +18,7 @@ type MapDispatchPropsType = {
 
 export type DialogPropsType = MapStatePropsType & MapDispatchPropsType
 
-const mapStateToProps = (state: RootStoreType): MapStatePropsType => {
+const mapStateToProps = (state: RootStateType): MapStatePropsType => {
     return {
         dialogs: state.dialogs,
         // isAuth: state.authorization.isAuthorized,

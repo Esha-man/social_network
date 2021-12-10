@@ -1,8 +1,8 @@
 import React from "react";
 import {Header} from "./Header";
 import {connect} from "react-redux";
-import {RootStoreType} from "../../redux/redux-store";
-import {loginHeaderThunkCreator} from "../../redux/authorization-reducer";
+import {RootStateType} from "../../redux/redux-store";
+import {isAuthorizedUserTC} from "../../redux/authorization-reducer";
 import {compose} from "redux";
 
 
@@ -14,7 +14,7 @@ type MapStateToPropsType = {
 
 type MapDispatchToPropsType = {
     // setAuthUserData: (data: DataType) => void
-    loginHeaderThunkCreator: () => void
+    isAuthorizedUserTC: () => void
 }
 
 type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
@@ -22,7 +22,7 @@ type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
 
 class HeaderContainer extends React.Component<HeaderContainerType> {
     componentDidMount() {
-        this.props.loginHeaderThunkCreator()
+        this.props.isAuthorizedUserTC()
     }
 
     render() {
@@ -37,13 +37,13 @@ class HeaderContainer extends React.Component<HeaderContainerType> {
     }
 }
 
-const mapStateToProps = (state: RootStoreType): MapStateToPropsType => ({
+const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
     login: state.authorization.login,
     isAuthorized: state.authorization.isAuthorized
 
 })
 
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {loginHeaderThunkCreator})
+    connect(mapStateToProps, {isAuthorizedUserTC})
 )
 (HeaderContainer)

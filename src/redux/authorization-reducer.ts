@@ -1,28 +1,7 @@
-import {authorizationAPI} from "../api/api";
 import {Dispatch} from "redux";
-
-const SET_AUTH_USER_DATA = "SET_AUTH_USER_DATA"
-
-type InitialAuthStateType = {
-    id: string
-    email: string
-    login: string
-    isAuthorized: boolean
-}
-
-type AuthAllActionType = SetAuthUserDataType
-
-export type DataType = {
-    id: string
-    email: string
-    login: string
-
-}
-
-type SetAuthUserDataType = {
-    type: "SET_AUTH_USER_DATA"
-    data: DataType
-}
+import { ThunkAction } from "redux-thunk";
+import {authorizationAPI, LoginType} from "../api/api";
+import {AllActionsType, RootStateType} from "./redux-store";
 
 
 const InitialAuthState: InitialAuthStateType = {
@@ -35,28 +14,72 @@ const InitialAuthState: InitialAuthStateType = {
 export const authorizationReducer = (state: InitialAuthStateType = InitialAuthState,
                                      action: AuthAllActionType): InitialAuthStateType => {
     switch (action.type) {
-        case SET_AUTH_USER_DATA:
+        case "AUTHORIZATION/SET_AUTH_USER_DATA":
             return {
                 ...state,
-                ...action.data,
-                isAuthorized: true,
+                ...action.payload,
+                // isAuthorized: true,
             }
+
         default:
             return state
     }
 }
 
-export const setAuthUserData = (data: DataType): SetAuthUserDataType => ({
-    type: SET_AUTH_USER_DATA, data,
-})
+type ThunkType = ThunkAction<void, RootStateType, unknown, AllActionsType>
 
-export const loginHeaderThunkCreator = () => {
-    return (dispatch: Dispatch) => {
-        authorizationAPI.getHeaderLogin().then(response => {
+export const setAuthUserData = (id: string, email: string, login: string, isAuthorized: boolean) => ({
+    type: "AUTHORIZATION/SET_AUTH_USER_DATA", payload: {id, email, login, isAuthorized}
+} as const)
+// export const loginization = (loginParams: LoginType) => (
+//     {type: "AUTHORIZATION/LOGIN", loginParams} as const
+// )
 
+export const isAuthorizedUserTC = () => (dispatch: Dispatch) => {
+    authorizationAPI.me()
+        .then(response => {
             if (response.resultCode === 0) {
-                dispatch(setAuthUserData(response.data))
+                let {id, email, login} = response.data
+                dispatch(setAuthUserData(id, email, login, true))
             }
         })
-    }
 }
+
+export const loginTC = (email: string, password: string, rememberMe: boolean): ThunkType =>
+
+    (dispatch) => {
+        authorizationAPI.login(email, password, rememberMe)
+            .then(response => {
+                if (response.resultCode === 0) {
+                    dispatch(isAuthorizedUserTC())
+                }
+            })
+    }
+export const logOutTC = () =>
+    (dispatch: Dispatch) => {
+        authorizationAPI.logOut()
+            .then(response => {
+                if (response.resultCode === 0) {
+                    dispatch(setAuthUserData("", "", "", false))
+                }
+            })
+    }
+
+
+type AuthAllActionType = ReturnType<typeof setAuthUserData>
+
+type InitialAuthStateType = {
+    id: string
+    email: string
+    login: string
+    isAuthorized: boolean
+}
+
+export type DataType = {
+    id: string
+    email: string
+    login: string
+}
+
+
+// type LoginizationActionType = ReturnType<typeof loginization>

@@ -4,15 +4,25 @@ import React from "react";
 
 type TextareaFormType = {
     clickCallback: (textarea: string) => void
-    // textareaValue: string
 }
+
+
 export const TextareaForm = (props: TextareaFormType) => {
     const formik = useFormik({
         initialValues: {
             textarea: "",
         },
+        validate: values => {
+            console.log(values.textarea.length)
+            const errors: any = {};
+            if (!values.textarea) {
+                errors.textarea = "You can enter a message";
+            } else if (values.textarea.length > 140) {
+                errors.textarea = "No more than 140 symbols";
+            }
+            return errors
+        },
         onSubmit: values => {
-            // alert(JSON.stringify(values));
             props.clickCallback(values.textarea)
         },
     });
@@ -23,11 +33,12 @@ export const TextareaForm = (props: TextareaFormType) => {
                 <textarea
                     id="textarea"
                     name="textarea"
-                    // type="textarea"
                     onChange={formik.handleChange}
                     value={formik.values.textarea}
+                    onBlur={formik.handleBlur}
                 />
             </div>
+            {formik.errors.textarea ? <div style={{color: "green"}}>{formik.errors.textarea}</div> : <div></div>}
             <button type="submit">Add post</button>
         </form>
     );

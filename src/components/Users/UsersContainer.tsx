@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import {RootStoreType} from "../../redux/redux-store";
+import {RootStateType} from "../../redux/redux-store";
 import {
     changePageThunkCreator,
     getUsersThunkCreator,
@@ -42,8 +42,6 @@ class UsersContainer extends React.Component<UsersType> {
 
 
     componentDidMount() {
-        
-    debugger
        this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
     }
 
@@ -75,7 +73,7 @@ class UsersContainer extends React.Component<UsersType> {
 
 }
 
-const mapStateToProps = (state: RootStoreType): MapStateToPropsType => {
+const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
     return {
         users: state.usersPage.users,
         pageSize: state.usersPage.pageSize,
