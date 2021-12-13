@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ErrorMessage, Field, useFormik} from 'formik';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
@@ -16,48 +16,63 @@ type ErrorsType = {
 
 
 export const Login = () => {
-    const isAuthorized = useSelector<RootStateType>(state => state.authorization.isAuthorized)
+    const isAuthorized = useSelector<RootStateType>(state =>
+        state.authorization.isAuthorized)
+    const serverError = useSelector<RootStateType>(state => state.authorization.serverError)
     const dispatch = useDispatch()
 
 
     if (isAuthorized) {
         return <Redirect to={"/"}/>
     }
+
+
     return (
-        <Formik
-            initialValues={{email: "", password: "", rememberMe: false}}
-            validationSchema={Yup.object({
-                email: Yup.string().email('Invalid email address').required('Email required'),
-                password: Yup.string().min(4, 'Password must be 4 characters but less 20')
-                    .max(20, 'Password must be 4 characters but less 20')
-                    .required('Password required')
-            })}
-            onSubmit={(values) => {
-                dispatch(loginTC(values.email, values.password, values.rememberMe))
+        <div>
+            <Formik
+                initialValues={{email: "", password: "", rememberMe: false}}
+                validationSchema={Yup.object({
+                    email: Yup.string().email('Enter valid email address').required('Email required'),
+                    password: Yup.string().min(4, 'Password must be 4 characters but less 20')
+                        .max(20, 'Password must be 4 characters but less 20')
+                        .required('Password required')
 
-            }}
-        >
-            {formik => (
-                <form onSubmit={formik.handleSubmit}>
-                    <div>
-                        <div><label htmlFor="email">Email Address</label></div>
-                        <div><Field name="email" type="email"/></div>
-                        <div style={{color: "red"}}><ErrorMessage name="email"/></div>
-                    </div>
-                    <div>
-                        <div><label htmlFor="password">Your Password</label></div>
-                        <div><Field name="password" type="password"/></div>
-                        <div style={{color: "red"}}><ErrorMessage name="password"/></div>
-                    </div>
-                    <div>
-                        <div><label htmlFor="rememberMe">Remember Me</label></div>
-                        <div><Field name="rememberMe" type="checkbox"/></div>
-                    </div>
-                    <button type="submit">Login</button>
-                </form>
-            )}
+                })}
+                onSubmit={(values) => {
+                    dispatch(loginTC(values.email, values.password, values.rememberMe))
 
-        </Formik>
+                }}
+            >
+                {formik => (
+                    <form onSubmit={formik.handleSubmit}>
+                        <div>
+                            <div><label htmlFor="email">Email Address</label></div>
+                            <div><Field name="email" type="email"/></div>
+                            <div style={{color: "red"}}><ErrorMessage name="email"/></div>
+                        </div>
+                        <div>
+                            <div><label htmlFor="password">Your Password</label></div>
+                            <div><Field name="password" type="password"/></div>
+                            <div style={{color: "red"}}><ErrorMessage name="password"/></div>
+                        </div>
+                        <div>
+                            <div><label htmlFor="rememberMe">Remember Me</label></div>
+                            <div><Field name="rememberMe" type="checkbox"/></div>
+                        </div>
+                        <div style={{height: "15px"}}>
+                            // @ts-ignore
+                            {serverError}
+                        </div>
+                        <button type="submit">Login</button>
+                    </form>
+                )}
+
+            </Formik>
+
+
+
+        </div>
+
     )
 }
 

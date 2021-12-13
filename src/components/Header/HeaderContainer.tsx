@@ -17,7 +17,7 @@ type MapDispatchToPropsType = {
     isAuthorizedUserTC: () => void
 }
 
-type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
+export type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
 
 
 class HeaderContainer extends React.Component<HeaderContainerType> {
@@ -43,7 +43,8 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
 
 })
 
+
+
 export default compose<React.ComponentType>(
     connect(mapStateToProps, {isAuthorizedUserTC})
-)
-(HeaderContainer)
+) (HeaderContainer)

@@ -122,7 +122,11 @@ export const getProfileThunkCreator = (userId: string) => {
 export const getStatusThunkCreator = (userId: string) => {
     return (dispatch: Dispatch) => {
         profileAPI.getStatus(userId).then(response => {
-            dispatch(setStatusAC(response.data))
+            if (response.data) {
+                dispatch(setStatusAC(response.data))
+            } else {
+                return ""
+            }
         })
     }
 }

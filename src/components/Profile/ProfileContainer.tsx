@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Profile} from "./Profile";
 import {getProfileThunkCreator, getStatusThunkCreator, updateStatusThunkCreator} from "../../redux/profile-reducer";
-import { connect } from "react-redux";
+import {connect} from "react-redux";
 import {RootStateType} from "../../redux/redux-store";
 import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 import {RouteComponentProps, withRouter} from "react-router-dom";
@@ -10,6 +10,8 @@ import {compose} from "redux";
 type MapStateType = {
     profileUser: any
     status: string
+    myUserId: string
+    isAuthorized: boolean
 }
 
 type MapDispatchType = {
@@ -31,7 +33,7 @@ class ProfileContainer extends React.Component<PropsType> {
     componentDidMount() {
         let userId = this.props.match.params.userId;
         if (!userId) {
-            userId = "18932"
+            userId = this.props.myUserId
         }
         this.props.getProfileThunkCreator(userId)
         this.props.getStatusThunkCreator(userId)
@@ -55,18 +57,22 @@ class ProfileContainer extends React.Component<PropsType> {
 
 
 const mapStateToProps = (state: RootStateType): MapStateType => {
-  return {
-      profileUser: state.profile.profileUser,
-      status: state.profile.status,
-  }
+    return {
+        profileUser: state.profile.profileUser,
+        status: state.profile.status,
+        myUserId: state.authorization.id,
+        isAuthorized: state.authorization.isAuthorized,
+    }
 }
 
 export default compose<React.ComponentType>(
-    // withAuthRedirectHOC,
+    withAuthRedirectHOC,
     connect(mapStateToProps,
-        {getProfileThunkCreator,
+        {
+            getProfileThunkCreator,
             getStatusThunkCreator,
-            updateStatusThunkCreator}),
+            updateStatusThunkCreator
+        }),
     withRouter
 )(ProfileContainer)
 

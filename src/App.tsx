@@ -13,40 +13,43 @@ import HeaderContainer from "./components/Header/HeaderContainer";
 import {Login} from "./components/Login/Login";
 import {NotFound} from "./components/commons/NotFound/NotFound"
 
-function App() {
-    return (
-        <BrowserRouter>
-            <div className="app-wrapper">
+class App extends React.Component {
 
-                <div className={"app-header"}>
-                    <HeaderContainer/>
-                </div>
+    render() {
+        return (
+            <BrowserRouter>
+                <div className="app-wrapper">
 
-                <div className={"app-container"}>
-
-                    <div className={"app-navbar"}>
-                        <Navbar/>
-                    </div>
-                    <div className="app-wrapper-content">
-                        <Switch>
-                            <Route exact path={"/"} render={() => <ProfileContainer/>}/>
-                            <Route path={"/profile/:userId?"} render={() => <ProfileContainer/>}/>
-                            <Route path={"/dialogs"} render={() => <DialogsContainer/>}/>
-                            {/*<Route path={"/news"} render={() => <News/>}/>*/}
-                            {/*<Route path={"/music"} render={() => <Music/>}/>*/}
-                            {/*<Route path={"/settings"} render={() => <Settings/>}/>*/}
-                            <Route path={"/users"} render={() => <UsersContainer/>}/>
-                            <Route path={"/login"} render={() => <Login/>}/>
-                            <Route path={"/404"} render={() => <NotFound/>}/>
-                            <Redirect from={"*"} to={"/404"}/>
-                        </Switch>
+                    <div className={"app-header"}>
+                        <HeaderContainer/>
                     </div>
 
-                </div>
-            </div>
+                    <div className={"app-container"}>
 
-        </BrowserRouter>
-    );
+                        <div className={"app-navbar"}>
+                            <Navbar/>
+                        </div>
+                        <div className="app-wrapper-content">
+                            <Switch>
+                                <Route exact path={"/"} render={() => <ProfileContainer/>}/>
+                                <Route path={"/profile/:userId?"} render={() => <ProfileContainer/>}/>
+                                <Route path={"/dialogs"} render={() => <DialogsContainer/>}/>
+                                {/*<Route path={"/news"} render={() => <News/>}/>*/}
+                                {/*<Route path={"/music"} render={() => <Music/>}/>*/}
+                                {/*<Route path={"/settings"} render={() => <Settings/>}/>*/}
+                                <Route path={"/users"} render={() => <UsersContainer/>}/>
+                                <Route path={"/login"} render={() => <Login/>}/>
+                                <Route path={"/404"} render={() => <NotFound/>}/>
+                                <Redirect from={"*"} to={"/404"}/>
+                            </Switch>
+                        </div>
+
+                    </div>
+                </div>
+
+            </BrowserRouter>
+        );
+    }
 }
 
 

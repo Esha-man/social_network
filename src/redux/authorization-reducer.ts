@@ -1,5 +1,5 @@
 import {Dispatch} from "redux";
-import { ThunkAction } from "redux-thunk";
+import {ThunkAction} from "redux-thunk";
 import {authorizationAPI, LoginType} from "../api/api";
 import {AllActionsType, RootStateType} from "./redux-store";
 
@@ -9,6 +9,7 @@ const InitialAuthState: InitialAuthStateType = {
     email: "",
     login: "",
     isAuthorized: false,
+    serverError: null,
 }
 
 export const authorizationReducer = (state: InitialAuthStateType = InitialAuthState,
@@ -20,20 +21,23 @@ export const authorizationReducer = (state: InitialAuthStateType = InitialAuthSt
                 ...action.payload,
                 // isAuthorized: true,
             }
-
+        case "AUTHORIZATION/SET-SERVER-ERROR":
+            return {
+                ...state,
+                serverError: action.error
+            }
         default:
             return state
     }
 }
 
-type ThunkType = ThunkAction<void, RootStateType, unknown, AllActionsType>
-
 export const setAuthUserData = (id: string, email: string, login: string, isAuthorized: boolean) => ({
     type: "AUTHORIZATION/SET_AUTH_USER_DATA", payload: {id, email, login, isAuthorized}
 } as const)
-// export const loginization = (loginParams: LoginType) => (
-//     {type: "AUTHORIZATION/LOGIN", loginParams} as const
-// )
+
+export const setServerError = (error: string | null) => (
+    {type: "AUTHORIZATION/SET-SERVER-ERROR", error} as const
+)
 
 export const isAuthorizedUserTC = () => (dispatch: Dispatch) => {
     authorizationAPI.me()
@@ -47,14 +51,21 @@ export const isAuthorizedUserTC = () => (dispatch: Dispatch) => {
 
 export const loginTC = (email: string, password: string, rememberMe: boolean): ThunkType =>
 
-    (dispatch) => {
+    (dispatch ) => {
         authorizationAPI.login(email, password, rememberMe)
             .then(response => {
                 if (response.resultCode === 0) {
                     dispatch(isAuthorizedUserTC())
+                } else {
+                    if (response.messages.length) {
+                        // @ts-ignore    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                        dispatch(setServerError(response.messages[0]))
+
+                    }
                 }
             })
     }
+
 export const logOutTC = () =>
     (dispatch: Dispatch) => {
         authorizationAPI.logOut()
@@ -65,14 +76,18 @@ export const logOutTC = () =>
             })
     }
 
+type AuthAllActionType = SetAuthUserDataActionType | SetErrorActionType
+type SetAuthUserDataActionType = ReturnType<typeof setAuthUserData>
+type SetErrorActionType = ReturnType<typeof setServerError>
 
-type AuthAllActionType = ReturnType<typeof setAuthUserData>
+type ThunkType = ThunkAction<void, RootStateType, unknown, AllActionsType>
 
-type InitialAuthStateType = {
+export type InitialAuthStateType = {
     id: string
     email: string
     login: string
     isAuthorized: boolean
+    serverError: string | null
 }
 
 export type DataType = {
@@ -82,4 +97,3 @@ export type DataType = {
 }
 
 
-// type LoginizationActionType = ReturnType<typeof loginization>
