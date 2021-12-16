@@ -1,7 +1,8 @@
 import {Dispatch} from "redux";
-import {ThunkAction} from "redux-thunk";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
 import {authorizationAPI, LoginType} from "../api/api";
 import {AllActionsType, RootStateType} from "./redux-store";
+// import {AuthAllActionType} from "./app-reducer";
 
 
 const InitialAuthState: InitialAuthStateType = {
@@ -35,12 +36,11 @@ export const setAuthUserData = (id: string, email: string, login: string, isAuth
     type: "AUTHORIZATION/SET_AUTH_USER_DATA", payload: {id, email, login, isAuthorized}
 } as const)
 
-export const setServerError = (error: string | null) => (
-    {type: "AUTHORIZATION/SET-SERVER-ERROR", error} as const
-)
+export const setServerError = (error: string | null) =>
+    ({type: "AUTHORIZATION/SET-SERVER-ERROR", error} as const)
 
 export const isAuthorizedUserTC = () => (dispatch: Dispatch) => {
-    authorizationAPI.me()
+   return  authorizationAPI.me()
         .then(response => {
             if (response.resultCode === 0) {
                 let {id, email, login} = response.data
@@ -49,16 +49,14 @@ export const isAuthorizedUserTC = () => (dispatch: Dispatch) => {
         })
 }
 
-export const loginTC = (email: string, password: string, rememberMe: boolean): ThunkType =>
-
-    (dispatch ) => {
+export const loginTC = (email: string, password: string, rememberMe: boolean) =>
+    (dispatch: ThunkDispatch<RootStateType, unknown, AllActionsType> ) => {
         authorizationAPI.login(email, password, rememberMe)
             .then(response => {
                 if (response.resultCode === 0) {
                     dispatch(isAuthorizedUserTC())
                 } else {
                     if (response.messages.length) {
-                        // @ts-ignore    ///!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
                         dispatch(setServerError(response.messages[0]))
 
                     }
@@ -76,7 +74,7 @@ export const logOutTC = () =>
             })
     }
 
-type AuthAllActionType = SetAuthUserDataActionType | SetErrorActionType
+export type AuthAllActionType = SetAuthUserDataActionType | SetErrorActionType
 type SetAuthUserDataActionType = ReturnType<typeof setAuthUserData>
 type SetErrorActionType = ReturnType<typeof setServerError>
 

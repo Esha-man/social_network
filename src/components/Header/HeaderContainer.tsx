@@ -1,3 +1,4 @@
+
 import React from "react";
 import {Header} from "./Header";
 import {connect} from "react-redux";
@@ -13,7 +14,6 @@ type MapStateToPropsType = {
 }
 
 type MapDispatchToPropsType = {
-    // setAuthUserData: (data: DataType) => void
     isAuthorizedUserTC: () => void
 }
 
@@ -21,9 +21,7 @@ export type HeaderContainerType = MapStateToPropsType & MapDispatchToPropsType
 
 
 class HeaderContainer extends React.Component<HeaderContainerType> {
-    componentDidMount() {
-        this.props.isAuthorizedUserTC()
-    }
+
 
     render() {
         return (
@@ -43,8 +41,15 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => ({
 
 })
 
-
-
 export default compose<React.ComponentType>(
-    connect(mapStateToProps, {isAuthorizedUserTC})
+    connect(mapStateToProps)
 ) (HeaderContainer)
+
+// export default compose<React.ComponentType>(
+//     connect(mapStateToProps, {isAuthorizedUserTC})
+// ) (HeaderContainer)
+
+
+
+
+

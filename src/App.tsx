@@ -2,55 +2,76 @@ import React from 'react';
 import './App.css';
 
 import {Navbar} from "./components/Navbar/Navbar";
-import {News} from "./components/News/News";
-import {Settings} from "./components/Settings/Settings";
-import {Music} from "./components/Music/Music";
 import {DialogsContainer} from "./components/Dialogs/DialogsContainer"
-import {BrowserRouter, Route, Redirect, Switch} from 'react-router-dom'
+import {BrowserRouter, Route, Redirect, Switch, withRouter} from 'react-router-dom'
 import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
-import HeaderContainer from "./components/Header/HeaderContainer";
+import HeaderContainer, {HeaderContainerType} from "./components/Header/HeaderContainer";
 import {Login} from "./components/Login/Login";
 import {NotFound} from "./components/commons/NotFound/NotFound"
+import {RootStateType} from "./redux/redux-store";
+import {compose} from "redux";
+import {connect} from "react-redux";
+import {isAuthorizedUserTC} from "./redux/authorization-reducer";
+import { initializeAppTC } from './redux/app-reducer';
+import {SpinnerLoader} from "./components/commons/SpinnerLoader/SpinnerLoader";
 
-class App extends React.Component {
+class App extends React.Component<appContainerType> {
+    componentDidMount() {
+
+        this.props.initializeAppTC()
+    }
+
 
     render() {
-        return (
-            <BrowserRouter>
-                <div className="app-wrapper">
-
-                    <div className={"app-header"}>
-                        <HeaderContainer/>
-                    </div>
-
-                    <div className={"app-container"}>
-
-                        <div className={"app-navbar"}>
-                            <Navbar/>
-                        </div>
-                        <div className="app-wrapper-content">
-                            <Switch>
-                                <Route exact path={"/"} render={() => <ProfileContainer/>}/>
-                                <Route path={"/profile/:userId?"} render={() => <ProfileContainer/>}/>
-                                <Route path={"/dialogs"} render={() => <DialogsContainer/>}/>
-                                {/*<Route path={"/news"} render={() => <News/>}/>*/}
-                                {/*<Route path={"/music"} render={() => <Music/>}/>*/}
-                                {/*<Route path={"/settings"} render={() => <Settings/>}/>*/}
-                                <Route path={"/users"} render={() => <UsersContainer/>}/>
-                                <Route path={"/login"} render={() => <Login/>}/>
-                                <Route path={"/404"} render={() => <NotFound/>}/>
-                                <Redirect from={"*"} to={"/404"}/>
-                            </Switch>
-                        </div>
-
-                    </div>
+        console.log(this.props.initialized)
+        if (!this.props.initialized) {
+            return <SpinnerLoader/>
+        }
+         return (
+            <div className="app-wrapper">
+                <div className={"app-header"}>
+                    <HeaderContainer/>
                 </div>
 
-            </BrowserRouter>
+                <div className={"app-container"}>
+                    <div className={"app-navbar"}>
+                        <Navbar/>
+                    </div>
+                    <div className="app-wrapper-content">
+                        <Switch>
+                            <Route path={"/profile"} render={() => <ProfileContainer/>}/>
+                            <Route exact path={"/"} render={() => <ProfileContainer/>}/>
+                            <Route path={"/profile/:userId?"} render={() => <ProfileContainer/>}/>
+                            <Route path={"/dialogs"} render={() => <DialogsContainer/>}/>
+                            <Route path={"/users"} render={() => <UsersContainer/>}/>
+                            <Route path={"/login"} render={() => <Login/>}/>
+                            <Route path={"/404"} render={() => <NotFound/>}/>
+                            <Redirect from={"*"} to={"/404"}/>
+                        </Switch>
+                    </div>
+
+                </div>
+            </div>
         );
     }
 }
 
+const mapStateToProps = (state: RootStateType) => ({
+     initialized: state.app.initialized
+})
 
-export default App;
+export default compose<React.ComponentType>(
+    connect (mapStateToProps, {initializeAppTC}),
+    withRouter
+)(App);
+
+
+type MapStateToPropsType = {
+    initialized: boolean
+}
+type MapDispatchToPropsType = {
+    initializeAppTC: () => void
+}
+
+export type appContainerType = MapStateToPropsType & MapDispatchToPropsType

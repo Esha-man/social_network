@@ -34,6 +34,9 @@ class ProfileContainer extends React.Component<PropsType> {
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = this.props.myUserId
+            if (!userId) {
+                this.props.history.push("/login")
+            }
         }
         this.props.getProfileThunkCreator(userId)
         this.props.getStatusThunkCreator(userId)
@@ -66,7 +69,7 @@ const mapStateToProps = (state: RootStateType): MapStateType => {
 }
 
 export default compose<React.ComponentType>(
-    withAuthRedirectHOC,
+    // withAuthRedirectHOC,
     connect(mapStateToProps,
         {
             getProfileThunkCreator,

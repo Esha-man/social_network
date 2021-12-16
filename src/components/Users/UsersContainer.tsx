@@ -94,7 +94,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
 // })(UsersContainer)
 
 export default compose<React.ComponentType>(
-    withAuthRedirectHOC,
+    // withAuthRedirectHOC,
     connect(mapStateToProps, {
         getUsersThunk: getUsersThunkCreator,
         changePageThunk: changePageThunkCreator,

@@ -18,7 +18,7 @@ type ErrorsType = {
 export const Login = () => {
     const isAuthorized = useSelector<RootStateType>(state =>
         state.authorization.isAuthorized)
-    const serverError = useSelector<RootStateType>(state => state.authorization.serverError)
+    const serverError = useSelector<RootStateType,  string | null>(state => state.authorization.serverError)
     const dispatch = useDispatch()
 
 
@@ -60,8 +60,7 @@ export const Login = () => {
                             <div><Field name="rememberMe" type="checkbox"/></div>
                         </div>
                         <div style={{height: "15px"}}>
-                            // @ts-ignore
-                            {serverError}
+                            {serverError && serverError}
                         </div>
                         <button type="submit">Login</button>
                     </form>

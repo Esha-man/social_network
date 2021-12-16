@@ -3,11 +3,17 @@ import {ProfileActionsType, profileReducer} from "./profile-reducer";
 import {CallbackDialogsType, dialogsReducer, NewDialogsPostType} from "./dialogs-reducer";
 import {sidebarReducer} from "./sidebar-reducer";
 import {usersReducer, UsersReducerActionType} from "./users-reducer";
-import {authorizationReducer} from "./authorization-reducer";
+import {AuthAllActionType, authorizationReducer} from "./authorization-reducer";
 import thunk from 'redux-thunk';
+import {AppAllActionType, appReducer} from "./app-reducer";
 
-export type AllActionsType = ProfileActionsType | NewDialogsPostType
-    | CallbackDialogsType | UsersReducerActionType
+export type AllActionsType = ProfileActionsType
+    | NewDialogsPostType
+    | CallbackDialogsType
+    | UsersReducerActionType
+    | AuthAllActionType
+    | AppAllActionType
+
 
 
  const rootReducer = combineReducers(
@@ -17,6 +23,7 @@ export type AllActionsType = ProfileActionsType | NewDialogsPostType
          sidebarContent: sidebarReducer,
          usersPage: usersReducer,
          authorization: authorizationReducer,
+         app: appReducer,
 
      }
  );
