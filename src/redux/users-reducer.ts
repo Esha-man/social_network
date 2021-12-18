@@ -1,20 +1,33 @@
 import {Dispatch} from "redux";
-import {usersAPI} from "../api/api";
+import {usersAPI, UsersResponseType} from "../api/api";
 
 //20163
 
 export type UserType = {
-    name: string
-    id: number
-    uniqueUrlName: string | null
-    status: string
-    followed: boolean
-    photos: {
-        small: string | null
-        large: string | null
-    }
 
+        name: string
+        id: number
+        uniqueUrlName: string | null
+        status: string
+        followed: boolean
+        photos: {
+            small: string | null
+            large: string | null
+        }
 }
+// export type UserType = {
+//     name: string
+//     id: number
+//     uniqueUrlName: string | null
+//     status: string
+//     followed: boolean
+//     photos: {
+//         small: string | null
+//         large: string | null
+//     }
+// }
+
+
 export type InitialStateUsersType = {
     users: Array<UserType>
     pageSize: number
@@ -124,7 +137,11 @@ export const usersReducer = (state: InitialStateUsersType = initialStateUsers,
             }
         }
         case SET_USERS: {
-            return {...state, users: [...action.users], ...state.users}
+            return {
+                ...state,
+                users: [...action.users],
+                // ...state.users
+            }
         }
         case FOLLOWING_IN_PROGRESS: {
             return {
@@ -145,9 +162,12 @@ export const followAC = (id: number): FollowActionType => (
 export const unFollowAC = (id: number): UnFollowAcnionType => (
     {type: UNFOLLOW, id}
 )
-export const setNewUsersAC = (users: Array<UserType>): SetNewUsersAcnionType => (
+export const setNewUsersAC = (users: Array<UsersResponseType>): SetNewUsersAcnionType => (
     {type: SET_USERS, users}
 )
+// export const setNewUsersAC = (users: Array<UserType>): SetNewUsersAcnionType => (
+//     {type: SET_USERS, users}
+// )
 
 export const setCurrentPageAC = (page: number): SetCurrentPageAcnionType => (
     {type: SET_CURRENT_PAGE, page}
@@ -173,6 +193,17 @@ export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
         })
     }
 }
+// export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
+//     return (dispatch: Dispatch) => {  // Thunk
+//         dispatch(spinnerLoaderFetchingAC(true))
+//         usersAPI.getUsers(currentPage, pageSize).then(data => {
+//
+//             dispatch(spinnerLoaderFetchingAC(false))
+//             dispatch(setNewUsersAC(data.items))
+//             dispatch(setTotalUsersCountAC(data.totalCount))
+//         })
+//     }
+// }
 
 export const changePageThunkCreator = (page: number, pageSize: number) => {
     return (dispatch: Dispatch) => {  // Thunk

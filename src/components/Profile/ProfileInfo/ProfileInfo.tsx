@@ -3,41 +3,25 @@ import style from "../Profile.module.css"
 import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
 import avatarDefault from "../../../assets/images/avatar_default.png";
 import {ProfileStatus} from "../ProfileStatus/ProfileStatus";
+import {GetProfileUser, UserContactsType} from "../../../api/api";
 
 type ProfileInfoPropsType = {
-    profileUser: any
+    profileUser: GetProfileUser
     status: string
-updateStatus: (status: string)=> void
+    updateStatus: (status: string) => void
+    contacts: UserContactsType
 }
 
 export const ProfileInfo = (props: ProfileInfoPropsType) => {
 
 
     const lookingForAJob = () => {
-        if (props.profileUser.lookingForAJob === true) {
-            return "В поиске работы"
-        } else {
-            return "Работаю"
-        }
+        return !props.profileUser.lookingForAJob ? "В поиске работы" : "Работаю"
     }
 
-    const myContacts = () => {
-        let contact = props.profileUser.contacts
-
-        let contacts = []
-        // let keys =[]
-        for (let key in contact) {
-            if (contact[key]) {
-                // contacts.push(contact[key])
-                // keys.push(key)
-                contacts.push(`${key}: https://www.${contact[key]}`)
-                console.log(`${key}: https://www.${contact[key]}`)
-            }
-
-        }
-        return contacts.map(el => <div>{el}</div>)
-
-    }
+const strCont = () => {
+  return JSON.stringify(props.contacts)
+}
 
 
     if (!props.profileUser) {
@@ -55,15 +39,18 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                     {props.profileUser.fullName}
                 </div>
                 <div>
-                    <img src={props.profileUser.photos.small ? props.profileUser.photos.small : avatarDefault}/>
+                    <img src={props.profileUser.photos.small
+                        ? props.profileUser.photos.small
+                        : avatarDefault}
+                    />
 
-                    <ProfileStatus status={props.status} updateStatus={props.updateStatus}/>  {/*STATUS*/}
+                    <ProfileStatus status={props.status} updateStatus={props.updateStatus}/> {/*STATUS*/}
 
-                    {/*<div>{props.profileUser.aboutMe}</div>*/}
-                    {/*<div>{lookingForAJob()}</div>*/}
-                    {/*<div>Контакты для связи:</div>*/}
+                    <div>{lookingForAJob()}</div>
 
-                    {/*<a href={"https://www." + myContacts()}>{myContacts()}</a>*/}
+                    <div>Контакты для связи:</div>
+                    <div>{strCont()}</div>
+
                 </div>
             </div>
         </div>

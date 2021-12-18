@@ -4,7 +4,7 @@ import {
     changePageThunkCreator,
     getUsersThunkCreator,
     followUsersThunkCreator,
-    UserType, unfollowUsersThunkCreator
+    UserType, unfollowUsersThunkCreator, setCurrentPageAC
 } from "../../redux/users-reducer";
 import React from "react";
 import {Users} from "./Users";
@@ -43,10 +43,13 @@ class UsersContainer extends React.Component<UsersType> {
 
     componentDidMount() {
        this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
+
     }
 
     onChangePage(pageNum: number) {
         this.props.changePageThunk(pageNum, this.props.pageSize)
+        // this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
+
     }
 
     render() {
