@@ -1,6 +1,6 @@
 import {Dispatch} from "redux";
 import {ThunkAction, ThunkDispatch} from "redux-thunk";
-import {authorizationAPI, LoginType} from "../api/api";
+import {authorizationAPI} from "../api/api";
 import {AllActionsType, RootStateType} from "./redux-store";
 // import {AuthAllActionType} from "./app-reducer";
 

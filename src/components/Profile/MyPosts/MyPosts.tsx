@@ -25,7 +25,7 @@ export const MyPosts = (props: ProfilePropsType) => {
     )
 }
 
-type TextareaFormType = {
-    clickCallback: (textarea: string) => void
-}
+// type TextareaFormType = {
+//     clickCallback: (textarea: string) => void
+// }
 

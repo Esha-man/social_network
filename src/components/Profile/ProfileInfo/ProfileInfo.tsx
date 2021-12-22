@@ -20,8 +20,32 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
     }
 
 const strCont = () => {
-  return JSON.stringify(props.contacts)
+  return  JSON.stringify(props.contacts)
+  // let obj = JSON.stringify(props.contacts)
 }
+// const strCont1 = () => {
+//   // return  JSON.stringify(props.contacts)
+//   let obj = props.contacts
+//
+//     let keysObj = []
+//     let valuesObj = []
+//     // @ts-ignore
+//     for (let key in obj) {
+//         // @ts-ignore
+//         keysObj.push([key])
+//         // @ts-ignore
+//         if (obj[key] === null) {
+//             valuesObj.push(`https://${keysObj}.com`)
+//         } else {
+//             // @ts-ignore
+//             valuesObj.push(obj[key])
+//         }
+//
+//         console.log(keysObj + ": " + valuesObj)
+//     }
+//
+//     return `${keysObj}  ${valuesObj}`
+// }
 
 
     if (!props.profileUser) {

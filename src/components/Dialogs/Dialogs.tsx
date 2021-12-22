@@ -1,11 +1,10 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import style from "./Dialogs.module.css"
 
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
 
 import {DialogPropsType} from "./DialogsContainer";
-import {useFormik} from "formik";
 import { TextareaForm } from "../commons/TextareaForm/TextareaForm";
 
 

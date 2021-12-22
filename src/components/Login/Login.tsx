@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {ErrorMessage, Field, useFormik} from 'formik';
+import React from 'react';
+import {ErrorMessage, Field} from 'formik';
 import {Formik} from 'formik';
 import * as Yup from 'yup';
 import {loginTC} from "../../redux/authorization-reducer";
@@ -7,12 +7,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {RootStateType} from "../../redux/redux-store";
 import {Redirect} from "react-router-dom";
 
-
-type ErrorsType = {
-    email?: string
-    password?: string
-    rememberMe?: boolean
-}
 
 
 export const Login = () => {

@@ -1,4 +1,4 @@
-import axios, {AxiosResponse} from "axios";
+import axios from "axios";
 
 
 
@@ -21,46 +21,6 @@ const instance = axios.create({
 //         large: string | null
 //     }
 // }
-type ItemUsersResponseType = {
-    items: Array<UsersResponseType>
-    totalCount: number
-    error: null
-}
-
-export type UsersResponseType = {
-        name: string
-        id: number
-        uniqueUrlName: string | null
-        status: string
-        followed: boolean
-        photos: {
-            small: string | null
-            large: string | null
-        }
-}
-
-
-export type GetProfileUser = {
-    userId: number
-    lookingForAJob: boolean
-    lookingForAJobDescription: string
-    fullName: string
-    contacts: UserContactsType
-    photos: {
-        small: string | null
-        large: string | null
-    }
-}
-export type UserContactsType = {
-    github: string
-    vk: string
-    facebook: string
-    instagram: string
-    twitter: string
-    website: string
-    youtube: string
-    mainLink: string
-}
 
 
 // export const usersAPI = {
@@ -139,3 +99,43 @@ type ResponseType<D = {}> = {
     data: D
 }
 
+type ItemUsersResponseType = {
+    items: Array<UsersResponseType>
+    totalCount: number
+    error: null
+}
+
+export type UsersResponseType = {
+    name: string
+    id: number
+    uniqueUrlName: string | null
+    status: string
+    followed: boolean
+    photos: {
+        small: string | null
+        large: string | null
+    }
+}
+
+
+export type GetProfileUser = {
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: UserContactsType
+    photos: {
+        small: string | null
+        large: string | null
+    }
+}
+export type UserContactsType = {
+    github: string | null
+    vk: string | null
+    facebook: string | null
+    instagram: string | null
+    twitter: string | null
+    website: string | null
+    youtube: string | null
+    mainLink: string | null
+}

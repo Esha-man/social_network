@@ -11,6 +11,14 @@ import {Users} from "./Users";
 import {SpinnerLoader} from "../commons/SpinnerLoader/SpinnerLoader";
 import {compose} from "redux";
 import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
+import {
+    getCurrentPage,
+    getFollowingInProgress,
+    getIsFetching,
+    getPageSize,
+    getTotalUsersCount,
+    getUsersSelector
+} from "../../redux/selectors/users-selectors";
 
 
 type MapStateToPropsType = {
@@ -78,14 +86,24 @@ class UsersContainer extends React.Component<UsersType> {
 
 const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
     return {
-        users: state.usersPage.users,
-        pageSize: state.usersPage.pageSize,
-        totalUsersCount: state.usersPage.totalUsersCount,
-        currentPage: state.usersPage.currentPage,
-        isFetching: state.usersPage.isFetching,
-        followingInProgress: state.usersPage.followingInProgress,
+        users: getUsersSelector(state),
+        pageSize: getPageSize(state),
+        totalUsersCount: getTotalUsersCount(state),
+        currentPage: getCurrentPage(state),
+        isFetching: getIsFetching(state),
+        followingInProgress: getFollowingInProgress(state),
     }
 }
+// const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
+//     return {
+//         users: state.usersPage.users,
+//         pageSize: state.usersPage.pageSize,
+//         totalUsersCount: state.usersPage.totalUsersCount,
+//         currentPage: state.usersPage.currentPage,
+//         isFetching: state.usersPage.isFetching,
+//         followingInProgress: state.usersPage.followingInProgress,
+//     }
+// }
 
 
 // export default connect(mapStateToProps, {

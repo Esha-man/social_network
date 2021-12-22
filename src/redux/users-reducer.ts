@@ -5,15 +5,15 @@ import {usersAPI, UsersResponseType} from "../api/api";
 
 export type UserType = {
 
-        name: string
-        id: number
-        uniqueUrlName: string | null
-        status: string
-        followed: boolean
-        photos: {
-            small: string | null
-            large: string | null
-        }
+    name: string
+    id: number
+    uniqueUrlName: string | null
+    status: string
+    followed: boolean
+    photos: {
+        small: string | null
+        large: string | null
+    }
 }
 // export type UserType = {
 //     name: string
@@ -185,8 +185,9 @@ export const followingInProgressAC = (isFetching: boolean, id: number): Followin
 export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
     return (dispatch: Dispatch) => {  // Thunk
         dispatch(spinnerLoaderFetchingAC(true))
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
+        dispatch(setCurrentPageAC(currentPage))
 
+        usersAPI.getUsers(currentPage, pageSize).then(data => {
             dispatch(spinnerLoaderFetchingAC(false))
             dispatch(setNewUsersAC(data.items))
             dispatch(setTotalUsersCountAC(data.totalCount))
@@ -219,13 +220,13 @@ export const changePageThunkCreator = (page: number, pageSize: number) => {
 export const unfollowUsersThunkCreator = (userId: number) => {
     return (dispatch: Dispatch) => {
 
-            dispatch(followingInProgressAC(true, userId))
-            usersAPI.deleteUsers(userId).then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(unFollowAC(userId))
-                }
-                dispatch(followingInProgressAC(false, userId))
-            })
+        dispatch(followingInProgressAC(true, userId))
+        usersAPI.deleteUsers(userId).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(unFollowAC(userId))
+            }
+            dispatch(followingInProgressAC(false, userId))
+        })
 
     }
 }
@@ -233,12 +234,12 @@ export const followUsersThunkCreator = (userId: number) => {
     return (dispatch: Dispatch) => {
 
         dispatch(followingInProgressAC(true, userId))
-            usersAPI.postUsers(userId).then(data => {
-                if (data.resultCode === 0) {
-                    dispatch(followAC(userId))
-                }
-                dispatch(followingInProgressAC(false, userId))
-            })
+        usersAPI.postUsers(userId).then(data => {
+            if (data.resultCode === 0) {
+                dispatch(followAC(userId))
+            }
+            dispatch(followingInProgressAC(false, userId))
+        })
 
 
     }

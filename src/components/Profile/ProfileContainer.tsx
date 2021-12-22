@@ -12,6 +12,13 @@ import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import {GetProfileUser, UserContactsType} from "../../api/api";
+import {
+    getProfileUserSelector,
+    getStatusSelector,
+    getMyUserIdSelector,
+    getIsAuthorizedSelector,
+    getContactsSelector
+} from "../../redux/selectors/profile-selectors";
 
 type MapStateType = {
     profileUser: GetProfileUser
@@ -70,11 +77,11 @@ class ProfileContainer extends React.Component<PropsType> {
 
 const mapStateToProps = (state: RootStateType): MapStateType => {
     return {
-        profileUser: state.profile.profileUser,
-        status: state.profile.status,
-        myUserId: state.authorization.id,
-        isAuthorized: state.authorization.isAuthorized,
-        contacts: state.profile.profileUser.contacts,
+        profileUser: getProfileUserSelector(state),
+        status: getStatusSelector(state),
+        myUserId: getMyUserIdSelector(state),
+        isAuthorized: getIsAuthorizedSelector(state),
+        contacts: getContactsSelector(state),
     }
 }
 
