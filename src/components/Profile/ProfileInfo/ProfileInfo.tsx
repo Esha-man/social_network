@@ -4,6 +4,7 @@ import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
 import avatarDefault from "../../../assets/images/avatar_default.png";
 import {ProfileStatus} from "../ProfileStatus/ProfileStatus";
 import {GetProfileUser, UserContactsType} from "../../../api/api";
+import { ProfileStatusHooks } from "../ProfileStatus/ProfileStatusHooks";
 
 type ProfileInfoPropsType = {
     profileUser: GetProfileUser
@@ -68,7 +69,7 @@ const strCont = () => {
                         : avatarDefault}
                     />
 
-                    <ProfileStatus status={props.status} updateStatus={props.updateStatus}/> {/*STATUS*/}
+                    <ProfileStatusHooks status={props.status} updateStatus={props.updateStatus}/> {/*STATUS*/}
 
                     <div>{lookingForAJob()}</div>
 
