@@ -2,7 +2,6 @@ import React from "react";
 import style from "../Profile.module.css"
 import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
 import avatarDefault from "../../../assets/images/avatar_default.png";
-import {ProfileStatus} from "../ProfileStatus/ProfileStatus";
 import {GetProfileUser, UserContactsType} from "../../../api/api";
 import { ProfileStatusHooks } from "../ProfileStatus/ProfileStatusHooks";
 
@@ -13,7 +12,7 @@ type ProfileInfoPropsType = {
     contacts: UserContactsType
 }
 
-export const ProfileInfo = (props: ProfileInfoPropsType) => {
+export const ProfileInfo = React.memo((props: ProfileInfoPropsType) => {
 
 
     const lookingForAJob = () => {
@@ -80,4 +79,4 @@ const strCont = () => {
             </div>
         </div>
     )
-}
+})

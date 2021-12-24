@@ -9,7 +9,7 @@ import {Redirect} from "react-router-dom";
 
 
 
-export const Login = () => {
+export const Login = React.memo(() => {
     const isAuthorized = useSelector<RootStateType>(state =>
         state.authorization.isAuthorized)
     const serverError = useSelector<RootStateType,  string | null>(state => state.authorization.serverError)
@@ -67,7 +67,7 @@ export const Login = () => {
         </div>
 
     )
-}
+})
 
 
 /// ---------------------------Old version form --------------------------------///

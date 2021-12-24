@@ -20,7 +20,7 @@ type PropsType = {
     unfollowUsersThunk: (userId: number) => void
 }
 
-export const Users = (props: PropsType) => {
+export const Users = React.memo( (props: PropsType) => {
 
     let pagesCount = Math.ceil(props
         .totalUsersCount / props.pageSize);
@@ -76,4 +76,4 @@ export const Users = (props: PropsType) => {
             </div>)}
         </div>
     )
-}
+})
