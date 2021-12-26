@@ -1,8 +1,7 @@
 import {Dispatch} from "redux";
-import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import { ThunkDispatch} from "redux-thunk";
 import {authorizationAPI} from "../api/api";
 import {AllActionsType, RootStateType} from "./redux-store";
-// import {AuthAllActionType} from "./app-reducer";
 
 
 const InitialAuthState: InitialAuthStateType = {
@@ -39,20 +38,18 @@ export const setAuthUserData = (id: string, email: string, login: string, isAuth
 export const setServerError = (error: string | null) =>
     ({type: "AUTHORIZATION/SET-SERVER-ERROR", error} as const)
 
-export const isAuthorizedUserTC = () => (dispatch: Dispatch) => {
-   return  authorizationAPI.me()
-        .then(response => {
+export const isAuthorizedUserTC = () => async (dispatch: Dispatch) => {
+   let response = await authorizationAPI.me()
             if (response.resultCode === 0) {
                 let {id, email, login} = response.data
                 dispatch(setAuthUserData(id, email, login, true))
             }
-        })
 }
 
 export const loginTC = (email: string, password: string, rememberMe: boolean) =>
-    (dispatch: ThunkDispatch<RootStateType, unknown, AllActionsType> ) => {
-        authorizationAPI.login(email, password, rememberMe)
-            .then(response => {
+   async (dispatch: ThunkDispatch<RootStateType, unknown, AllActionsType> ) => {
+       let response = await authorizationAPI.login(email, password, rememberMe)
+
                 if (response.resultCode === 0) {
                     dispatch(isAuthorizedUserTC())
                 } else {
@@ -61,24 +58,20 @@ export const loginTC = (email: string, password: string, rememberMe: boolean) =>
 
                     }
                 }
-            })
+
     }
 
-export const logOutTC = () =>
-    (dispatch: Dispatch) => {
-        authorizationAPI.logOut()
-            .then(response => {
+export const logOutTC = () => async (dispatch: Dispatch) => {
+       let response = await  authorizationAPI.logOut()
                 if (response.resultCode === 0) {
                     dispatch(setAuthUserData("", "", "", false))
                 }
-            })
     }
 
 export type AuthAllActionType = SetAuthUserDataActionType | SetErrorActionType
 type SetAuthUserDataActionType = ReturnType<typeof setAuthUserData>
 type SetErrorActionType = ReturnType<typeof setServerError>
 
-type ThunkType = ThunkAction<void, RootStateType, unknown, AllActionsType>
 
 export type InitialAuthStateType = {
     id: string

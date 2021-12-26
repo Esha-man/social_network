@@ -1,4 +1,4 @@
- import {followAC, InitialStateUsersType, setNewUsersAC, unFollowAC, usersReducer} from "./users-reducer";
+ import {followAC, InitialStateUsersType, setNewUsersAC, unFollowAC, usersReducer} from "../users-reducer";
 //
 // test("user must be be follow", () => {
 //

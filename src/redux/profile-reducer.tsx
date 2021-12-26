@@ -23,15 +23,15 @@ export type initialStateProfileReducerType = {
 // }
 
 type NewStatePostType = {
-    type: "NEW-STATE-POST"
+    type: "PROFILE-REDUCER/NEW-STATE-POST"
     text: string
 }
 type ChangeNewTextCallbackType = {
-    type: "CHANGE-NEW-TEXT-CALLBACK"
+    type: "PROFILE-REDUCER/CHANGE-NEW-TEXT-CALLBACK"
     textProfile: string
 }
 type SetProfileUserType = {
-    type: "SET_PROFILE_USER"
+    type: "PROFILE-REDUCER/SET_PROFILE_USER"
     profileUser: GetProfileUser
 }
 //     type SetProfileUserType = {
@@ -40,7 +40,7 @@ type SetProfileUserType = {
 // }
 
 type SetStatusType = {
-    type: "SET_STATUS"
+    type: "PROFILE-REDUCER/SET_STATUS"
     status: string
 }
 type GetContactsType = ReturnType<typeof getContactsAC>
@@ -51,10 +51,10 @@ export type ProfileActionsType = NewStatePostType
     | SetStatusType
     | GetContactsType
 
-const NEW_STATE_POST = "NEW-STATE-POST"
-const CHANGE_NEW_TEXT_CALLBACK = "CHANGE-NEW-TEXT-CALLBACK"
-const SET_PROFILE_USER = "SET_PROFILE_USER"
-const SET_STATUS = "SET_STATUS"
+// const NEW_STATE_POST = "NEW-STATE-POST"
+// const CHANGE_NEW_TEXT_CALLBACK = "CHANGE-NEW-TEXT-CALLBACK"
+// const SET_PROFILE_USER = "SET_PROFILE_USER"
+// const SET_STATUS = "SET_STATUS"
 
 let initialState: initialStateProfileReducerType = {
     myPostsData: [
@@ -62,8 +62,6 @@ let initialState: initialStateProfileReducerType = {
         {id: v1(), likes: 7, post: "What your name?"},
         {id: v1(), likes: 5, post: "Go! Go! Go!"},
         {id: v1(), likes: 4, post: "Hi"},
-        {id: v1(), likes: 2, post: "Hi"},
-        {id: v1(), likes: 3, post: "Hi"},
     ],
     profileUser: {
         userId: 0,
@@ -94,23 +92,23 @@ export const profileReducer = (state: initialStateProfileReducerType = initialSt
                                action: AllActionsType): initialStateProfileReducerType => {
 
     switch (action.type) {
-        case NEW_STATE_POST:
+        case "PROFILE-REDUCER/NEW-STATE-POST":
             const newPost: MyPostsType = {id: v1(), likes: 6, post: action.text}
             return {
                 ...state,
                 myPostsData: [...state.myPostsData, newPost],
             }
-        case SET_PROFILE_USER:
+        case "PROFILE-REDUCER/SET_PROFILE_USER":
             return {
                 ...state,
                 profileUser: action.profileUser
             }
-        case SET_STATUS:
+        case "PROFILE-REDUCER/SET_STATUS":
             return {
                 ...state,
                 status: action.status
             }
-        case "GET-CONTACTS":
+        case "PROFILE-REDUCER/GET-CONTACTS":
             return {
                 ...state,
                 profileUser: {...state.profileUser, contacts: action.contacts},
@@ -123,7 +121,7 @@ export const profileReducer = (state: initialStateProfileReducerType = initialSt
 
 export const newStatePostAC = (text: string): NewStatePostType => {
     return {
-        type: NEW_STATE_POST, text
+        type: "PROFILE-REDUCER/NEW-STATE-POST", text
     }
 }
 // export const ChangeNewTextCallbackAC = (text: string): ChangeNewTextCallbackType => {
@@ -135,71 +133,50 @@ export const newStatePostAC = (text: string): NewStatePostType => {
 
 export const SetProfileUserAC = (profileUser: GetProfileUser): SetProfileUserType => {
     return {
-        type: SET_PROFILE_USER, profileUser
+        type: "PROFILE-REDUCER/SET_PROFILE_USER", profileUser
     }
 }
-// export const SetProfileUserAC = (profileUser: string): SetProfileUserType => {
-//     return {
-//         type: SET_PROFILE_USER, profileUser
-//     }
-// }
 
 export const setStatusAC = (status: string): SetStatusType => {
     return {
-        type: SET_STATUS, status
+        type: "PROFILE-REDUCER/SET_STATUS", status
     }
 }
 
 const getContactsAC = (contacts: UserContactsType) => (
-    {type: "GET-CONTACTS", contacts} as const
+    {type: "PROFILE-REDUCER/GET-CONTACTS", contacts} as const
 )
-export const getProfileThunkCreator = (userId: string) => {
-    return (dispatch: Dispatch) => {
-        usersAPI.getProfile(userId).then(response => {
+
+
+export const getProfileThunkCreator = (userId: string) => async (dispatch: Dispatch) => {
+      let response = await usersAPI.getProfile(userId)
             dispatch(SetProfileUserAC(response.data))
-            // dispatch(getContactsAC(response.data.contacts))
-        })
+            dispatch(getContactsAC(response.data.contacts))
+
     }
-}
 
-// export const getProfileThunkCreator = (userId: string) => {
-//     return (dispatch: Dispatch) => {
-//         usersAPI.getProfile(userId).then(response => {
-//             dispatch(SetProfileUserAC(response.data))
-//
-//         })
-//     }
-// }
 
-export const getStatusThunkCreator = (userId: string) => {
-    return (dispatch: Dispatch) => {
-        profileAPI.getStatus(userId).then(response => {
+export const getStatusThunkCreator = (userId: string) =>  async (dispatch: Dispatch) => {
+        let response = await  profileAPI.getStatus(userId)
             if (response.data) {
                 dispatch(setStatusAC(response.data))
             } else {
                 return ""
             }
-        })
-    }
 }
 
-export const updateStatusThunkCreator = (status: string) => {
-    return (dispatch: Dispatch) => {
-        profileAPI.updateStatus(status).then(response => {
+export const updateStatusThunkCreator = (status: string) => async (dispatch: Dispatch) => {
+    let response = await profileAPI.updateStatus(status)
             if (response.data.resultCode === 0) {
                 dispatch(setStatusAC(status))
             }
-        })
     }
-}
 
-export const getContactsThunkCreator = (userId: string) => {
-    return (dispatch: Dispatch) => {
-        profileAPI.getProfile(userId).then(response => {
+export const getContactsThunkCreator = (userId: string) => async (dispatch: Dispatch) => {
+        let response = await  profileAPI.getProfile(userId)
             if (response.data) {
                 dispatch(getContactsAC(response.data.contacts))
             }
-        })
-    }
+
 }
 

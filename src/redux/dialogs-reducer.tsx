@@ -19,16 +19,16 @@ export type InitialStateDialogType = {
 }
 
 export type NewDialogsPostType = {
-    type: "NEW-DIALOGS-POST"
+    type: "DIALOGS-REDUCER/NEW-DIALOGS-POST"
     text: string
 }
 export type CallbackDialogsType = {
-    type: "CALLBACK-DIALOGS"
+    type: "DIALOGS-REDUCER/CALLBACK-DIALOGS"
     textDialogs: string
 }
 
-const NEW_DIALOGS_POST = "NEW-DIALOGS-POST"
-const CALLBACK_DIALOGS = "CALLBACK-DIALOGS"
+const NEW_DIALOGS_POST = "DIALOGS-REDUCER/NEW-DIALOGS-POST"
+const CALLBACK_DIALOGS = "DIALOGS-REDUCER/CALLBACK-DIALOGS"
 
 let initialState: InitialStateDialogType = {
     dialogsData: [

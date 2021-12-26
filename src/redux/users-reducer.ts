@@ -38,31 +38,31 @@ export type InitialStateUsersType = {
 
 }
 type FollowActionType = {
-    type: "FOLLOW"
+    type: "USERS_REDUCER/FOLLOW"
     id: number
 }
 type UnFollowAcnionType = {
-    type: "UNFOLLOW"
+    type: "USERS_REDUCER/UNFOLLOW"
     id: number
 }
 type SetNewUsersAcnionType = {
-    type: "SET-USERS"
+    type: "USERS_REDUCER/SET-USERS"
     users: Array<UserType>
 }
 type SetCurrentPageAcnionType = {
-    type: "SET-CURRENT-PAGE"
+    type: "USERS_REDUCER/SET-CURRENT-PAGE"
     page: number
 }
 type SetTotalUsersCountActionType = {
-    type: "SET-TOTAL-USERS-COUNT"
+    type: "USERS_REDUCER/SET-TOTAL-USERS-COUNT"
     totalCount: number
 }
 type SpinnerLoaderActionType = {
-    type: "SPINNER-LOADER-FETCHING"
+    type: "USERS_REDUCER/SPINNER-LOADER-FETCHING"
     isFetching: boolean
 }
 type FollowingInProgressActionType = {
-    type: "FOLLOWING-IN-PROGRESS"
+    type: "USERS_REDUCER/FOLLOWING-IN-PROGRESS"
     isFetching: boolean
     id: number
 }
@@ -72,13 +72,13 @@ export type UsersReducerActionType = FollowActionType |
     SpinnerLoaderActionType | FollowingInProgressActionType
 
 //--- action creators types end ---//
-const FOLLOW = "FOLLOW"
-const UNFOLLOW = "UNFOLLOW"
-const SET_USERS = "SET-USERS"
-const SET_CURRENT_PAGE = "SET-CURRENT-PAGE"
-const SET_TOTAL_USERS_COUNT = "SET-TOTAL-USERS-COUNT"
-const SPINNER_LOADER_FETCHING = "SPINNER-LOADER-FETCHING"
-const FOLLOWING_IN_PROGRESS = "FOLLOWING-IN-PROGRESS"
+const FOLLOW = "USERS_REDUCER/FOLLOW"
+const UNFOLLOW = "USERS_REDUCER/UNFOLLOW"
+const SET_USERS = "USERS_REDUCER/SET-USERS"
+const SET_CURRENT_PAGE = "USERS_REDUCER/SET-CURRENT-PAGE"
+const SET_TOTAL_USERS_COUNT = "USERS_REDUCER/SET-TOTAL-USERS-COUNT"
+const SPINNER_LOADER_FETCHING = "USERS_REDUCER/SPINNER-LOADER-FETCHING"
+const FOLLOWING_IN_PROGRESS = "USERS_REDUCER/FOLLOWING-IN-PROGRESS"
 
 export const initialStateUsers: InitialStateUsersType = {
     users: [],
@@ -182,65 +182,40 @@ export const followingInProgressAC = (isFetching: boolean, id: number): Followin
     {type: FOLLOWING_IN_PROGRESS, isFetching, id}
 )
 
-export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-    return (dispatch: Dispatch) => {  // Thunk
+export const getUsersThunkCreator = (currentPage: number, pageSize: number) => async (dispatch: Dispatch) => {  // Thunk
         dispatch(spinnerLoaderFetchingAC(true))
         dispatch(setCurrentPageAC(currentPage))
 
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
+    let response = await  usersAPI.getUsers(currentPage, pageSize)
             dispatch(spinnerLoaderFetchingAC(false))
-            dispatch(setNewUsersAC(data.items))
-            dispatch(setTotalUsersCountAC(data.totalCount))
-        })
-    }
+            dispatch(setNewUsersAC(response.items))
+            dispatch(setTotalUsersCountAC(response.totalCount))
 }
-// export const getUsersThunkCreator = (currentPage: number, pageSize: number) => {
-//     return (dispatch: Dispatch) => {  // Thunk
-//         dispatch(spinnerLoaderFetchingAC(true))
-//         usersAPI.getUsers(currentPage, pageSize).then(data => {
-//
-//             dispatch(spinnerLoaderFetchingAC(false))
-//             dispatch(setNewUsersAC(data.items))
-//             dispatch(setTotalUsersCountAC(data.totalCount))
-//         })
-//     }
-// }
 
-export const changePageThunkCreator = (page: number, pageSize: number) => {
-    return (dispatch: Dispatch) => {  // Thunk
+export const changePageThunkCreator = (page: number, pageSize: number) => async (dispatch: Dispatch) => {  // Thunk
         dispatch(setCurrentPageAC(page))
         dispatch(spinnerLoaderFetchingAC(true))
-        usersAPI.getUsers(pageSize).then(data => {
+    let response = await usersAPI.getUsers(pageSize)
             dispatch(spinnerLoaderFetchingAC(false))
-            dispatch(setNewUsersAC(data.items))
-        })
-    }
+            dispatch(setNewUsersAC(response.items))
 }
 
-export const unfollowUsersThunkCreator = (userId: number) => {
-    return (dispatch: Dispatch) => {
+export const unfollowUsersThunkCreator = (userId: number) => async (dispatch: Dispatch) => {
 
         dispatch(followingInProgressAC(true, userId))
-        usersAPI.deleteUsers(userId).then(data => {
-            if (data.resultCode === 0) {
+    let response = await usersAPI.deleteUsers(userId)
+            if (response.resultCode === 0) {
                 dispatch(unFollowAC(userId))
             }
             dispatch(followingInProgressAC(false, userId))
-        })
-
-    }
 }
-export const followUsersThunkCreator = (userId: number) => {
-    return (dispatch: Dispatch) => {
+
+export const followUsersThunkCreator = (userId: number) => async (dispatch: Dispatch) => {
 
         dispatch(followingInProgressAC(true, userId))
-        usersAPI.postUsers(userId).then(data => {
-            if (data.resultCode === 0) {
+        let response = await  usersAPI.postUsers(userId)
+            if (response.resultCode === 0) {
                 dispatch(followAC(userId))
             }
             dispatch(followingInProgressAC(false, userId))
-        })
-
-
-    }
 }

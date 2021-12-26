@@ -38,7 +38,9 @@ export const TextareaForm = (props: TextareaFormType) => {
                     onBlur={formik.handleBlur}
                 />
             </div>
-            {formik.errors.textarea ? <div style={{color: "green"}}>{formik.errors.textarea}</div> : <div></div>}
+            {formik.errors.textarea
+                ? <div style={{color: "green"}}>{formik.errors.textarea}</div>
+                : <div></div>}
             <button type="submit">Add post</button>
         </form>
     );

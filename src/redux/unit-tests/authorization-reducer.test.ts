@@ -1,4 +1,4 @@
-import {authorizationReducer, InitialAuthStateType, setServerError} from "./authorization-reducer";
+import {authorizationReducer, InitialAuthStateType, setServerError} from "../authorization-reducer";
 
 
 test("server error must be: 'ERROR!'", ()=>{

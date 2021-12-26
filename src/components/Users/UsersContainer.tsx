@@ -51,13 +51,11 @@ class UsersContainer extends React.Component<UsersType> {
 
     componentDidMount() {
        this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
-
     }
 
     onChangePage(pageNum: number) {
-        this.props.changePageThunk(pageNum, this.props.pageSize)
-        // this.props.getUsersThunk(this.props.currentPage, this.props.pageSize)
-
+        // this.props.changePageThunk(pageNum, this.props.pageSize)
+        this.props.getUsersThunk(pageNum, this.props.pageSize)
     }
 
     render() {
@@ -65,14 +63,11 @@ class UsersContainer extends React.Component<UsersType> {
         return <>
             {this.props.isFetching ? <SpinnerLoader/> : null}
             <Users
-                // follow={this.props.follow}
-                // unfollow={this.props.unfollow}
                 totalUsersCount={this.props.totalUsersCount}
                 pageSize={this.props.pageSize}
                 onChangePage={this.onChangePage.bind(this)}
                 currentPage={this.props.currentPage}
                 users={this.props.users}
-                // followingInProgressAction={this.props.followingInProgressAction}
                 followingInProgress={this.props.followingInProgress}
                 followUsersThunk={this.props.followUsersThunk}
                 unfollowUsersThunk={this.props.unfollowUsersThunk}
