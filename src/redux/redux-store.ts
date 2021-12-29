@@ -6,6 +6,7 @@ import {usersReducer, UsersReducerActionType} from "./users-reducer";
 import {AuthAllActionType, authorizationReducer} from "./authorization-reducer";
 import thunk from 'redux-thunk';
 import {AppAllActionType, appReducer} from "./app-reducer";
+import { composeWithDevTools } from "redux-devtools-extension";
 
 export type AllActionsType = ProfileActionsType
     | NewDialogsPostType
@@ -30,10 +31,19 @@ export type AllActionsType = ProfileActionsType
 
 export type RootStateType = ReturnType<typeof rootReducer>
 
-export const store = createStore(rootReducer, applyMiddleware(thunk))
+// const store = createStore(rootReducer, composeWithDevTools(
+//     applyMiddleware(thunk),
+// ));
+
+export const store = createStore(rootReducer, composeWithDevTools(
+    applyMiddleware(thunk),
+));
+
+// export const store = createStore(rootReducer, applyMiddleware(thunk)
+// )
 
 
 // @ts-ignore
-window.store = store
+// window.store = store
 
 

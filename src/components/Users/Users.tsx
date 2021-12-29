@@ -6,7 +6,7 @@ import {User} from "./User/User";
 
 type PropsType = {
     users: Array<UserType>
-    totalUsersCount: number
+    totalItemsCount: number
     currentPage: number
     pageSize: number
     followingInProgress: number[]
@@ -18,22 +18,29 @@ type PropsType = {
 
 export const Users = React.memo((props: PropsType) => {
 
+    const portionSize = 10
 
     return (
         <div>
 
-            <Paginator pageSize={props.pageSize} totalUsersCount={props.totalUsersCount}
-                       onChangePage={props.onChangePage} currentPage={props.currentPage}/>
+            <Paginator pageSize={props.pageSize}
+                       totalItemsCount={props.totalItemsCount}
+                       onChangePage={props.onChangePage}
+                       currentPage={props.currentPage}
+                       portionSize={portionSize}
+            />
 
             {props.users.map((user: UserType) => <User key={user.id}
                                                        user={user}
                                                        followingInProgress={props.followingInProgress}
                                                        followUsersThunk={props.followUsersThunk}
-                                                       totalUsersCount={props.totalUsersCount}
-                                                       pageSize={props.pageSize}
+                                                       totalItemsCount={props.totalItemsCount}
+                                                     pageSize={props.pageSize}
                                                        unfollowUsersThunk={props.unfollowUsersThunk}
                                                        currentPage={props.currentPage}
                                                        onChangePage={props.onChangePage}/>)}
+
+
         </div>
     )
 })

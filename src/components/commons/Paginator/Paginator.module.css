@@ -1,3 +1,11 @@
+.paginatorWrapper{
+    margin: 5px;
+}
+
 .selectedPage {
     font-weight: bold;
 }
+/*.spanType {*/
+/*    border: 1px solid black;*/
+/*}*/
+

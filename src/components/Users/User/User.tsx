@@ -8,7 +8,7 @@ import {UserType} from "../../../redux/users-reducer";
 type PropsType = {
     user: UserType
     followingInProgress: number[]
-    totalUsersCount: number
+    totalItemsCount: number
     currentPage: number
     pageSize: number
 

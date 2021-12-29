@@ -53,7 +53,7 @@ export const Login = React.memo(() => {
                             <div><label htmlFor="rememberMe">Remember Me</label></div>
                             <div><Field name="rememberMe" type="checkbox"/></div>
                         </div>
-                        <div style={{height: "15px"}}>
+                        <div style={{height: "15px", marginBottom: "10px", color: "red"}}>
                             {serverError && serverError}
                         </div>
                         <button type="submit">Login</button>

@@ -24,7 +24,7 @@ import {
 type MapStateToPropsType = {
     users: Array<UserType>
     pageSize: number
-    totalUsersCount: number
+    totalItemsCount: number
     currentPage: number
     isFetching: boolean
     followingInProgress: number[]
@@ -63,7 +63,7 @@ class UsersContainer extends React.Component<UsersType> {
         return <>
             {this.props.isFetching ? <SpinnerLoader/> : null}
             <Users
-                totalUsersCount={this.props.totalUsersCount}
+                totalItemsCount={this.props.totalItemsCount}
                 pageSize={this.props.pageSize}
                 onChangePage={this.onChangePage.bind(this)}
                 currentPage={this.props.currentPage}
@@ -83,7 +83,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
     return {
         users: getUsersSelector(state),
         pageSize: getPageSize(state),
-        totalUsersCount: getTotalUsersCount(state),
+        totalItemsCount: getTotalUsersCount(state),
         currentPage: getCurrentPage(state),
         isFetching: getIsFetching(state),
         followingInProgress: getFollowingInProgress(state),
@@ -93,7 +93,7 @@ const mapStateToProps = (state: RootStateType): MapStateToPropsType => {
 //     return {
 //         users: state.usersPage.users,
 //         pageSize: state.usersPage.pageSize,
-//         totalUsersCount: state.usersPage.totalUsersCount,
+//         totalItemsCount: state.usersPage.totalItemsCount,
 //         currentPage: state.usersPage.currentPage,
 //         isFetching: state.usersPage.isFetching,
 //         followingInProgress: state.usersPage.followingInProgress,
