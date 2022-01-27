@@ -1,9 +1,8 @@
 import styles from "./user.module.css";
-import avatarDefault from "../../../assets/images/avatar_default.png";
 import React from "react";
 import {NavLink} from "react-router-dom";
 import {UserType} from "../../../redux/users-reducer";
-
+import avatarDefault from "../../../assets/images/avatar_girl.png"
 
 type PropsType = {
     user: UserType
@@ -25,7 +24,10 @@ export const User = React.memo((props: PropsType) => {
                 <span>
                     <div>
                         <NavLink to={"/profile/" + props.user.id}>
-                            <img src={props.user.photos.small !== null ? props.user.photos.small :
+                            <img src={props.user.photos.small !== null
+                                ?
+                                props.user.photos.small
+                                :
                                 avatarDefault}
                                  className={styles.usersAvatars}/>
                         </NavLink>
@@ -46,7 +48,10 @@ export const User = React.memo((props: PropsType) => {
                 </span>
             <span>
                     <div>{props.user.name}</div>
-                    <div>{props.user.status !== null ? <span>Status: {props.user.status}</span> :
+                    <div>{props.user.status !== null
+                        ?
+                        <span>Status: {props.user.status}</span>
+                        :
                         <span></span>}</div>
                 </span>
             <span>

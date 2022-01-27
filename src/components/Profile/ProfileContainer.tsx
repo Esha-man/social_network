@@ -3,12 +3,11 @@ import {Profile} from "./Profile";
 import {
     getContactsThunkCreator,
     getProfileThunkCreator,
-    getStatusThunkCreator,
+    getStatusThunkCreator, savePhotoTC,
     updateStatusThunkCreator
 } from "../../redux/profile-reducer";
 import {connect} from "react-redux";
 import {RootStateType} from "../../redux/redux-store";
-import {withAuthRedirectHOC} from "../../hoc/withAuthRedirectHOC";
 import {RouteComponentProps, withRouter} from "react-router-dom";
 import {compose} from "redux";
 import {GetProfileUser, UserContactsType} from "../../api/api";
@@ -19,6 +18,10 @@ import {
     getIsAuthorizedSelector,
     getContactsSelector
 } from "../../redux/selectors/profile-selectors";
+
+
+
+
 
 type MapStateType = {
     profileUser: GetProfileUser
@@ -33,6 +36,8 @@ type MapDispatchType = {
     getStatusThunkCreator: (userId: string) => void
     updateStatusThunkCreator: (status: string) => void
     getContactsThunkCreator: (userId: string) => void
+    savePhotoTC: (photo: any) => void
+
 }
 type ParamsType = {
     userId: string
@@ -43,7 +48,7 @@ type PropsType = RouteComponentProps<ParamsType> & StateDispatchType
 
 
 class ProfileContainer extends React.Component<PropsType> {
-    componentDidMount() {
+    refreshProfile(){
         let userId = this.props.match.params.userId;
         if (!userId) {
             userId = this.props.myUserId
@@ -54,9 +59,14 @@ class ProfileContainer extends React.Component<PropsType> {
         this.props.getProfileThunkCreator(userId)
         this.props.getStatusThunkCreator(userId)
         this.props.getContactsThunkCreator(userId)
-
-        //дописать запрос статуса
-
+    }
+    componentDidMount() {
+       this.refreshProfile()
+    }
+    componentDidUpdate(prevProps: Readonly<PropsType>, prevState: Readonly<{}>, snapshot?: any) {
+        if (this.props.match.params.userId !== prevProps.match.params.userId){
+            this.refreshProfile()
+        }
     }
 
     render() {
@@ -64,6 +74,8 @@ class ProfileContainer extends React.Component<PropsType> {
         return (
             <div>
                 <Profile {...this.props}
+                         savePhoto={this.props.savePhotoTC}
+                    isOwner={!this.props.match.params.userId}
                          profileUser={this.props.profileUser}
                          status={this.props.status}
                          contacts={this.props.contacts}
@@ -93,9 +105,11 @@ export default compose<React.ComponentType>(
             getStatusThunkCreator,
             updateStatusThunkCreator,
             getContactsThunkCreator,
+            savePhotoTC,
         }),
     withRouter
 )(ProfileContainer)
+
 
 // export const WithRouterDataContainerComponent = withRouter(ProfileContainer);
 // export default withAuthRedirectHOC(connect(mapStateToProps,{getProfileThunkCreator}) (WithRouterDataContainerComponent));

@@ -2,13 +2,15 @@ import React from 'react';
 import './App.css';
 
 import {Navbar} from "./components/Navbar/Navbar";
-import {DialogsContainer} from "./components/Dialogs/DialogsContainer"
 import {Route, Redirect, Switch, withRouter} from 'react-router-dom'
-import UsersContainer from "./components/Users/UsersContainer";
 import ProfileContainer from "./components/Profile/ProfileContainer";
-import HeaderContainer from "./components/Header/HeaderContainer";
+import {DialogsContainer} from "./components/Dialogs/DialogsContainer"
+import UsersContainer from "./components/Users/UsersContainer";
 import {Login} from "./components/Login/Login";
 import {NotFound} from "./components/commons/NotFound/NotFound"
+
+
+import HeaderContainer from "./components/Header/HeaderContainer";
 import {RootStateType} from "./redux/redux-store";
 import {compose} from "redux";
 import {connect} from "react-redux";
@@ -17,7 +19,6 @@ import {SpinnerLoader} from "./components/commons/SpinnerLoader/SpinnerLoader";
 
 class App extends React.Component<appContainerType> {
     componentDidMount() {
-
         this.props.initializeAppTC()
     }
 
@@ -38,16 +39,21 @@ class App extends React.Component<appContainerType> {
                         <Navbar/>
                     </div>
                     <div className="app-wrapper-content">
-                        <Switch>
+
+                        {/*<Suspense fallback={<div>Загрузка...</div>}>*/}
+                            <Switch>
+
                             <Route path={"/profile"} render={() => <ProfileContainer/>}/>
                             <Route exact path={"/"} render={() => <ProfileContainer/>}/>
                             <Route path={"/profile/:userId?"} render={() => <ProfileContainer/>}/>
+
                             <Route path={"/dialogs"} render={() => <DialogsContainer/>}/>
                             <Route path={"/users"} render={() => <UsersContainer/>}/>
                             <Route path={"/login"} render={() => <Login/>}/>
                             <Route path={"/404"} render={() => <NotFound/>}/>
                             <Redirect from={"*"} to={"/404"}/>
                         </Switch>
+
                     </div>
 
                 </div>

@@ -4,57 +4,7 @@ import {Dispatch} from "redux";
 import {GetProfileUser, profileAPI, UserContactsType, usersAPI} from "../api/api";
 
 
-export type MyPostsType = {
-    id: string
-    likes: number
-    post: string
-}
 
-export type initialStateProfileReducerType = {
-    myPostsData: Array<MyPostsType>
-    profileUser: GetProfileUser
-    status: string
-    // contacts: string[]
-}
-// export type initialStateProfileReducerType = {
-//     myPostsData: Array<MyPostsType>
-//     profileUser: string
-//     status: string
-// }
-
-type NewStatePostType = {
-    type: "PROFILE-REDUCER/NEW-STATE-POST"
-    text: string
-}
-type ChangeNewTextCallbackType = {
-    type: "PROFILE-REDUCER/CHANGE-NEW-TEXT-CALLBACK"
-    textProfile: string
-}
-type SetProfileUserType = {
-    type: "PROFILE-REDUCER/SET_PROFILE_USER"
-    profileUser: GetProfileUser
-}
-//     type SetProfileUserType = {
-//     type: "SET_PROFILE_USER"
-//     profileUser: string
-// }
-
-type SetStatusType = {
-    type: "PROFILE-REDUCER/SET_STATUS"
-    status: string
-}
-type GetContactsType = ReturnType<typeof getContactsAC>
-
-export type ProfileActionsType = NewStatePostType
-    | ChangeNewTextCallbackType
-    | SetProfileUserType
-    | SetStatusType
-    | GetContactsType
-
-// const NEW_STATE_POST = "NEW-STATE-POST"
-// const CHANGE_NEW_TEXT_CALLBACK = "CHANGE-NEW-TEXT-CALLBACK"
-// const SET_PROFILE_USER = "SET_PROFILE_USER"
-// const SET_STATUS = "SET_STATUS"
 
 let initialState: initialStateProfileReducerType = {
     myPostsData: [
@@ -113,6 +63,11 @@ export const profileReducer = (state: initialStateProfileReducerType = initialSt
                 ...state,
                 profileUser: {...state.profileUser, contacts: action.contacts},
             }
+        case "PROFILE-REDUCER/SAVE-PHOTO":
+            return {
+                ...state,
+                profileUser: {...state.profileUser, photos: action.file},
+            }
         default:
             return state
     }
@@ -124,12 +79,6 @@ export const newStatePostAC = (text: string): NewStatePostType => {
         type: "PROFILE-REDUCER/NEW-STATE-POST", text
     }
 }
-// export const ChangeNewTextCallbackAC = (text: string): ChangeNewTextCallbackType => {
-//     return {
-//         type: CHANGE_NEW_TEXT_CALLBACK, textProfile: text
-//     }
-// }
-
 
 export const SetProfileUserAC = (profileUser: GetProfileUser): SetProfileUserType => {
     return {
@@ -145,6 +94,10 @@ export const setStatusAC = (status: string): SetStatusType => {
 
 const getContactsAC = (contacts: UserContactsType) => (
     {type: "PROFILE-REDUCER/GET-CONTACTS", contacts} as const
+)
+
+const savePhotoAC = (file: any) => (
+    {type: "PROFILE-REDUCER/SAVE-PHOTO", file} as const
 )
 
 
@@ -179,4 +132,54 @@ export const getContactsThunkCreator = (userId: string) => async (dispatch: Disp
             }
 
 }
+export const savePhotoTC = (file: any) => async (dispatch: Dispatch) => {
+        let response = await profileAPI.savePhoto(file)
+            if (response.data) {
+                dispatch(savePhotoAC(response.data.data.photos))
+            }
 
+}
+
+
+
+
+export type MyPostsType = {
+    id: string
+    likes: number
+    post: string
+}
+
+export type initialStateProfileReducerType = {
+    myPostsData: Array<MyPostsType>
+    profileUser: GetProfileUser
+    status: string
+}
+
+
+type NewStatePostType = {
+    type: "PROFILE-REDUCER/NEW-STATE-POST"
+    text: string
+}
+type ChangeNewTextCallbackType = {
+    type: "PROFILE-REDUCER/CHANGE-NEW-TEXT-CALLBACK"
+    textProfile: string
+}
+type SetProfileUserType = {
+    type: "PROFILE-REDUCER/SET_PROFILE_USER"
+    profileUser: GetProfileUser
+}
+
+
+type SetStatusType = {
+    type: "PROFILE-REDUCER/SET_STATUS"
+    status: string
+}
+type GetContactsType = ReturnType<typeof getContactsAC>
+type SavePhotoActionType = ReturnType<typeof savePhotoAC>
+
+export type ProfileActionsType = NewStatePostType
+    | ChangeNewTextCallbackType
+    | SetProfileUserType
+    | SetStatusType
+    | GetContactsType
+    | SavePhotoActionType

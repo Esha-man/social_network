@@ -1,15 +1,17 @@
-import React from "react";
+import React, {ChangeEvent} from "react";
 import style from "../Profile.module.css"
 import {SpinnerLoader} from "../../commons/SpinnerLoader/SpinnerLoader";
-import avatarDefault from "../../../assets/images/avatar_default.png";
 import {GetProfileUser, UserContactsType} from "../../../api/api";
-import { ProfileStatusHooks } from "../ProfileStatus/ProfileStatusHooks";
+import {ProfileStatusHooks} from "../ProfileStatus/ProfileStatusHooks";
+
 
 type ProfileInfoPropsType = {
     profileUser: GetProfileUser
     status: string
     updateStatus: (status: string) => void
     contacts: UserContactsType
+    isOwner: boolean
+    savePhoto: (photo: any) => void
 }
 
 export const ProfileInfo = React.memo((props: ProfileInfoPropsType) => {
@@ -19,33 +21,15 @@ export const ProfileInfo = React.memo((props: ProfileInfoPropsType) => {
         return !props.profileUser.lookingForAJob ? "В поиске работы" : "Работаю"
     }
 
-const strCont = () => {
-  return  JSON.stringify(props.contacts)
-  // let obj = JSON.stringify(props.contacts)
-}
-// const strCont1 = () => {
-//   // return  JSON.stringify(props.contacts)
-//   let obj = props.contacts
-//
-//     let keysObj = []
-//     let valuesObj = []
-//     // @ts-ignore
-//     for (let key in obj) {
-//         // @ts-ignore
-//         keysObj.push([key])
-//         // @ts-ignore
-//         if (obj[key] === null) {
-//             valuesObj.push(`https://${keysObj}.com`)
-//         } else {
-//             // @ts-ignore
-//             valuesObj.push(obj[key])
-//         }
-//
-//         console.log(keysObj + ": " + valuesObj)
-//     }
-//
-//     return `${keysObj}  ${valuesObj}`
-// }
+    const strCont = () => {
+        return JSON.stringify(props.contacts)
+    }
+
+    const changeAvatar = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files !== null) {
+            props.savePhoto(e.target.files[0])
+        }
+    }
 
 
     if (!props.profileUser) {
@@ -64,10 +48,14 @@ const strCont = () => {
                 </div>
                 <div>
                     <img src={props.profileUser.photos.small
-                        ? props.profileUser.photos.small
-                        : avatarDefault}
+                        ?
+                        props.profileUser.photos.small
+                        :
+                        ""}
                     />
-
+                    <div>
+                        {props.isOwner && <input type="file" onChange={changeAvatar}/>}
+                    </div>
                     <ProfileStatusHooks status={props.status} updateStatus={props.updateStatus}/> {/*STATUS*/}
 
                     <div>{lookingForAJob()}</div>
